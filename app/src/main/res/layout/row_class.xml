@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/background_light"
+    android:paddingLeft="20dp"
+    android:paddingTop="10dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:singleLine="true"
+        android:text="Matiere"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/time"
+        app:layout_constraintEnd_toStartOf="@+id/time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/time" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:text="8h - 9h30"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:singleLine="true"
+        android:text="M. leprof"
+        android:textColor="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/time" />
+
+    <LinearLayout
+        android:id="@+id/smallTasks"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/teacher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/teacher"
+        app:layout_constraintTop_toTopOf="@+id/teacher">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/circle"
+                app:tint="@color/pink" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/poppins"
+                android:gravity="clip_vertical"
+                android:singleLine="true"
+                android:text="3"
+                android:textColor="@color/pink" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/circle"
+                app:tint="@color/blue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/poppins"
+                android:gravity="clip_vertical"
+                android:singleLine="true"
+                android:text="1 "
+                android:textColor="@color/blue" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teacher"
+        android:layout_height="0dp" />
+
+    <LinearLayout
+        android:id="@+id/tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/teacher"
+        app:layout_constraintTop_toBottomOf="@+id/space">
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/circle"
+                app:tint="@color/pink" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/poppins"
+                android:gravity="clip_vertical"
+                android:singleLine="true"
+                android:text="3 évaluations"
+                android:textColor="@color/pink" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/circle"
+                app:tint="@color/blue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/poppins"
+                android:gravity="clip_vertical"
+                android:singleLine="true"
+                android:text="1 exercice"
+                android:textColor="@color/blue" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
