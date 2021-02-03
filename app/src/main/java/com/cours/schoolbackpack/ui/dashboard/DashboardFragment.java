@@ -32,7 +32,7 @@ public class DashboardFragment extends Fragment {
     private DashboardViewModel dashboardViewModel;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private ConstraintLayout mondayLayout, tuesdayLayout, wednesdayLayout, thursdayLayout, fridayLayout;
+    private ConstraintLayout header, mondayLayout, tuesdayLayout, wednesdayLayout, thursdayLayout, fridayLayout;
     private TextView mondayName, tuesdayName, wednesdayName, thursdayName, fridayName, mondayNumber, tuesdayNumber, wednesdayNumber, thursdayNumber, fridayNumber;
     private Day monday = new Day(), tuesday= new Day(), wednesday= new Day(), thursday= new Day(), friday= new Day();
     private Week week = new Week();
@@ -44,6 +44,7 @@ public class DashboardFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         recyclerView = root.findViewById(R.id.recyclerView);
+        header = root.findViewById(R.id.header);
 
         mondayLayout = root.findViewById(R.id.mondayLayout);
         tuesdayLayout = root.findViewById(R.id.tuesdayLayout);
@@ -99,7 +100,6 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-
         unselectAllDays();
         generateDays();
         selectDay(1);
@@ -144,31 +144,36 @@ public class DashboardFragment extends Fragment {
     public void selectDay(int number) {
         switch (number) {
             case 1:
-                mondayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
+                if (isDarkMode()) mondayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
+                else mondayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 mondayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 mondayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(monday);
                 break;
             case 2:
-                tuesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
+                if (isDarkMode()) tuesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
+                else tuesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 tuesdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 tuesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(tuesday);
                 break;
             case 3:
-                wednesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
+                if (isDarkMode()) wednesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
+                else wednesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 wednesdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 wednesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(wednesday);
                 break;
             case 4:
-                thursdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
+                if (isDarkMode()) thursdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
+                else thursdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 thursdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 thursdayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(thursday);
                 break;
             default:
-                fridayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
+                if (isDarkMode()) fridayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
+                else fridayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 fridayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 fridayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(friday);
@@ -178,11 +183,22 @@ public class DashboardFragment extends Fragment {
     }
 
     public void unselectAllDays() {
-        mondayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_light));
-        tuesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_light));
-        wednesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_light));
-        thursdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_light));
-        fridayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_light));
+        if (isDarkMode()) {
+            header.setBackground(getActivity().getResources().getDrawable(R.drawable.header_dark));
+            mondayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_dark));
+            tuesdayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_dark));
+            wednesdayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_dark));
+            thursdayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_dark));
+            fridayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_dark));
+        }
+        else {
+            header.setBackground(getActivity().getResources().getDrawable(R.drawable.header_light));
+            mondayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_light));
+            tuesdayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_light));
+            wednesdayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_light));
+            thursdayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_light));
+            fridayLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.day_background_light));
+        }
 
         mondayName.setTextColor(getActivity().getResources().getColor(R.color.grey));
         tuesdayName.setTextColor(getActivity().getResources().getColor(R.color.grey));
@@ -190,11 +206,20 @@ public class DashboardFragment extends Fragment {
         thursdayName.setTextColor(getActivity().getResources().getColor(R.color.grey));
         fridayName.setTextColor(getActivity().getResources().getColor(R.color.grey));
 
-        mondayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
-        tuesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
-        wednesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
-        thursdayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
-        fridayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
+        if (isDarkMode()) {
+            mondayNumber.setTextColor(getActivity().getResources().getColor(R.color.white));
+            tuesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.white));
+            wednesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.white));
+            thursdayNumber.setTextColor(getActivity().getResources().getColor(R.color.white));
+            fridayNumber.setTextColor(getActivity().getResources().getColor(R.color.white));
+        } else {
+            mondayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
+            tuesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
+            wednesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
+            thursdayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
+            fridayNumber.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
+        }
+
     }
 
     public boolean isDarkMode() {

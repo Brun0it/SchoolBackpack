@@ -11,6 +11,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
         TextView time;
         LinearLayout smallTasks;
         LinearLayout tasks;
+        ConstraintLayout background;
         Space space;
         public ClassAdapterViewHolder(View itemView) {
             super(itemView);
@@ -39,6 +41,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
             smallTasks = itemView.findViewById(R.id.smallTasks);
             tasks = itemView.findViewById(R.id.tasks);
             space = itemView.findViewById(R.id.space);
+            background = itemView.findViewById(R.id.background);
         }
     }
 
@@ -73,6 +76,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
             holder.space.getLayoutParams().height = ((aClass.getDuration()-60)/4)*10;
             holder.space.requestLayout();
         }
+        if (darkMode) holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_dark));
+        else holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_light));
     }
 
     @Override
