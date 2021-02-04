@@ -137,30 +137,30 @@ public class DashboardFragment extends Fragment {
         int dayOfWeek;
         weekTextView.setText("Semaine " + weekNmb);
 
-        localCalendar.set(Calendar.DAY_OF_WEEK, 2);
+        localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) mondayNumber.setText(dayOfWeek + "");
         else mondayNumber.setText("0" + dayOfWeek);
 
-        localCalendar.set(Calendar.DAY_OF_WEEK, 3);
+        localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) tuesdayNumber.setText(dayOfWeek + "");
         else tuesdayNumber.setText("0" + dayOfWeek);
 
-        localCalendar.set(Calendar.DAY_OF_WEEK, 4);
+        localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) wednesdayNumber.setText(dayOfWeek + "");
         else wednesdayNumber.setText("0" + dayOfWeek);
 
-        localCalendar.set(Calendar.DAY_OF_WEEK, 5);
+        localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) thursdayNumber.setText(dayOfWeek + "");
-        else wednesdayNumber.setText("0" + dayOfWeek);
+        else thursdayNumber.setText("0" + dayOfWeek);
 
-        localCalendar.set(Calendar.DAY_OF_WEEK, 6);
+        localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) fridayNumber.setText(dayOfWeek + "");
-        else wednesdayNumber.setText("0" + dayOfWeek);
+        else fridayNumber.setText("0" + dayOfWeek);
     }
 
     public void displayList(Day day) {
