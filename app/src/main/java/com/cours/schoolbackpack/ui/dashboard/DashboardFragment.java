@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,13 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cours.schoolbackpack.Class;
-import com.cours.schoolbackpack.ClassAdapter;
-import com.cours.schoolbackpack.Day;
+import com.cours.schoolbackpack.model.Class;
+import com.cours.schoolbackpack.controller.ClassAdapter;
+import com.cours.schoolbackpack.model.Day;
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.ui.Week;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,9 +32,12 @@ public class DashboardFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private ConstraintLayout header, mondayLayout, tuesdayLayout, wednesdayLayout, thursdayLayout, fridayLayout;
-    private TextView mondayName, tuesdayName, wednesdayName, thursdayName, fridayName, mondayNumber, tuesdayNumber, wednesdayNumber, thursdayNumber, fridayNumber;
+    private TextView mondayName, tuesdayName, wednesdayName, thursdayName, fridayName, mondayNumber, tuesdayNumber, wednesdayNumber, thursdayNumber, fridayNumber, weekTextView;
+    private ImageButton previousWeek, nextWeek;
     private Day monday = new Day(), tuesday= new Day(), wednesday= new Day(), thursday= new Day(), friday= new Day();
     private Week week = new Week();
+    private Calendar calendar;
+    private int weekNmb;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,42 +70,97 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 unselectAllDays();
-                selectDay(1);
+                selectDay(Calendar.MONDAY);
             }
         });
         tuesdayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 unselectAllDays();
-                selectDay(2);
+                selectDay(Calendar.TUESDAY);
             }
         });
         wednesdayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 unselectAllDays();
-                selectDay(3);
+                selectDay(Calendar.WEDNESDAY);
             }
         });
         thursdayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 unselectAllDays();
-                selectDay(4);
+                selectDay(Calendar.THURSDAY);
             }
         });
         fridayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 unselectAllDays();
-                selectDay(5);
+                selectDay(Calendar.FRIDAY);
             }
         });
 
+        previousWeek = root.findViewById(R.id.previousWeek);
+        nextWeek = root.findViewById(R.id.nextWeek);
+        weekTextView = root.findViewById(R.id.weekTextView);
+
+
+        calendar = Calendar.getInstance();
+        previousWeek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar.add(Calendar.HOUR_OF_DAY, -(24*7));
+                updateDate();
+            }
+        });
+        nextWeek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar.add(Calendar.HOUR_OF_DAY, 24*7);
+                updateDate();
+            }
+        });
+
+        updateDate();
         unselectAllDays();
         generateDays();
-        selectDay(1);
+        selectDay(calendar.get(Calendar.DAY_OF_WEEK)-1);
+        Log.e("DashboardFrag",  calendar.get(Calendar.DAY_OF_WEEK) + "");
         return root;
+    }
+
+    public void updateDate() {
+        Calendar localCalendar = calendar;
+        weekNmb = localCalendar.get(Calendar.WEEK_OF_YEAR);
+        int dayOfWeek;
+        weekTextView.setText("Semaine " + weekNmb);
+
+        localCalendar.set(Calendar.DAY_OF_WEEK, 2);
+        dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
+        if (dayOfWeek > 10) mondayNumber.setText(dayOfWeek + "");
+        else mondayNumber.setText("0" + dayOfWeek);
+
+        localCalendar.set(Calendar.DAY_OF_WEEK, 3);
+        dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
+        if (dayOfWeek > 10) tuesdayNumber.setText(dayOfWeek + "");
+        else tuesdayNumber.setText("0" + dayOfWeek);
+
+        localCalendar.set(Calendar.DAY_OF_WEEK, 4);
+        dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
+        if (dayOfWeek > 10) wednesdayNumber.setText(dayOfWeek + "");
+        else wednesdayNumber.setText("0" + dayOfWeek);
+
+        localCalendar.set(Calendar.DAY_OF_WEEK, 5);
+        dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
+        if (dayOfWeek > 10) thursdayNumber.setText(dayOfWeek + "");
+        else wednesdayNumber.setText("0" + dayOfWeek);
+
+        localCalendar.set(Calendar.DAY_OF_WEEK, 6);
+        dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
+        if (dayOfWeek > 10) fridayNumber.setText(dayOfWeek + "");
+        else wednesdayNumber.setText("0" + dayOfWeek);
     }
 
     public void displayList(Day day) {
@@ -126,45 +183,63 @@ public class DashboardFragment extends Fragment {
         Calendar time1 = Calendar.getInstance();
         Calendar time2 = Calendar.getInstance();
         Calendar time3 = Calendar.getInstance();
-        time1.set(Calendar.HOUR_OF_DAY, 8);
+        Calendar time4 = Calendar.getInstance();
+        Calendar time5 = Calendar.getInstance();
+        Calendar time6 = Calendar.getInstance();
+        time1.set(Calendar.HOUR_OF_DAY, 9);
         time1.set(Calendar.MINUTE, 0);
         time2.set(Calendar.HOUR_OF_DAY, 9);
         time2.set(Calendar.MINUTE, 30);
-        time3.set(Calendar.HOUR_OF_DAY, 10);
-        time3.set(Calendar.MINUTE, 15);
-        monday.add(new Class("iOS", "A21", "M. Walkowiak", time1, 90));
-        monday.add(new Class("Communication", "B19", "Mme Vieillard", time2, 45));
-        monday.add(new Class("Programmation répartie", "D13", "M. Ernet", time3, 180));
+        time3.set(Calendar.HOUR_OF_DAY, 13);
+        time3.set(Calendar.MINUTE, 30);
+        time4.set(Calendar.HOUR_OF_DAY, 16);
+        time4.set(Calendar.MINUTE, 30);
+        time5.set(Calendar.HOUR_OF_DAY, 8);
+        time5.set(Calendar.MINUTE, 0);
+        time6.set(Calendar.HOUR_OF_DAY, 14);
+        time6.set(Calendar.MINUTE, 0);
 
-        tuesday.add(new Class("ABD", "A21", "M. Walkowiak", time1, 30));
-        tuesday.add(new Class("DEF", "B19", "Mme Vieillard", time2, 60));
-        tuesday.add(new Class("GHI", "D13", "M. Ernet", time3, 180));
+        monday.add(new Class("Maths", "Amphi 2", "M. Corbiere", time1, 30));
+        monday.add(new Class("Anglais", "TD4", "M. Corbiere", time2, 150));
+        monday.add(new Class("Espagnol", "TD4", "M. Hamon", time3, 180));
+
+        tuesday.add(new Class("Allemand", "TD4", "Mme Vieillard", time3, 180));
+        tuesday.add(new Class("Sport", "TD4", "M. Roulin", time4, 90));
+
+        wednesday.add(new Class("Histoire Géo", "TD4", "M. Walkowiak", time1, 180));
+        wednesday.add(new Class("Français", "TD4", "M. Ernet", time3, 180));
+
+        thursday.add(new Class("Latin", "TP3", "M. Laforcade", time3, 180));
+
+        friday.add(new Class("Physique Chimie", "TD4", "M. Ernet", time5, 90));
+        friday.add(new Class("Musique", "TD4", "M. Walkowiak", time2, 180));
+        friday.add(new Class("Art-Plastique", "TD4", "M. Walkowiak", time6, 90));
     }
 
-    public void selectDay(int number) {
-        switch (number) {
-            case 1:
+    public void selectDay(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case Calendar.MONDAY:
                 if (isDarkMode()) mondayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else mondayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 mondayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 mondayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(monday);
                 break;
-            case 2:
+            case Calendar.TUESDAY:
                 if (isDarkMode()) tuesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else tuesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 tuesdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 tuesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(tuesday);
                 break;
-            case 3:
+            case Calendar.WEDNESDAY:
                 if (isDarkMode()) wednesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else wednesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 wednesdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 wednesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(wednesday);
                 break;
-            case 4:
+            case Calendar.THURSDAY:
                 if (isDarkMode()) thursdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else thursdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 thursdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));

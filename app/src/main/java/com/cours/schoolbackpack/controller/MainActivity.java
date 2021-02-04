@@ -1,7 +1,8 @@
-package com.cours.schoolbackpack;
+package com.cours.schoolbackpack.controller;
 
 import android.os.Bundle;
 
+import com.cours.schoolbackpack.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

@@ -1,6 +1,6 @@
 package com.cours.schoolbackpack.ui;
 
-import com.cours.schoolbackpack.Day;
+import com.cours.schoolbackpack.model.Day;
 
 import java.util.ArrayList;
 import java.util.List;

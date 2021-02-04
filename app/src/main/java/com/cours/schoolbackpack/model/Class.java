@@ -1,4 +1,4 @@
-package com.cours.schoolbackpack;
+package com.cours.schoolbackpack.model;
 
 import java.sql.Time;
 import java.util.Calendar;

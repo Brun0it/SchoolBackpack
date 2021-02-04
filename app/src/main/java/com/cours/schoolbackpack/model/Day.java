@@ -1,4 +1,6 @@
-package com.cours.schoolbackpack;
+package com.cours.schoolbackpack.model;
+
+import com.cours.schoolbackpack.model.Class;
 
 import java.util.ArrayList;
 import java.util.List;

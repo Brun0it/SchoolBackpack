@@ -1,8 +1,9 @@
-package com.cours.schoolbackpack;
+package com.cours.schoolbackpack.controller;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,9 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.cours.schoolbackpack.R;
+import com.cours.schoolbackpack.model.Class;
 
 import java.util.List;
 
@@ -29,6 +33,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
         TextView name;
         TextView teacher;
         TextView time;
+        TextView duration;
         LinearLayout smallTasks;
         LinearLayout tasks;
         ConstraintLayout background;
@@ -42,6 +47,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
             tasks = itemView.findViewById(R.id.tasks);
             space = itemView.findViewById(R.id.space);
             background = itemView.findViewById(R.id.background);
+            duration = itemView.findViewById(R.id.duration);
         }
     }
 
@@ -67,7 +73,23 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
         holder.name.setText(aClass.getName());
         holder.teacher.setText(aClass.getClassroom() + " | " + aClass.getTeacher());
         holder.time.setText(aClass.getTime() + " - " + aClass.getFinalTime());
-        if (aClass.getDuration() < 60) {
+
+        int h = ((int) Math.floor(aClass.getDuration()/60));
+        String hour;
+        if (h < 1) hour = "";
+        else hour = h + "h";
+
+        int m = ((int) (aClass.getDuration() - 60*Math.floor(aClass.getDuration()/60)));
+        String min;
+        if (m < 1) min = "";
+        else {
+            if (m < 10) min = "+" + m;
+            else min = m + "";
+            if (h < 1) min = min + "m";
+        }
+
+        holder.duration.setText(hour + min);
+        /*if (aClass.getDuration() < 60) {
             holder.smallTasks.setVisibility(View.VISIBLE);
             holder.tasks.setVisibility(View.GONE);
         } else {
@@ -75,7 +97,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
             holder.tasks.setVisibility(View.VISIBLE);
             holder.space.getLayoutParams().height = ((aClass.getDuration()-60)/4)*10;
             holder.space.requestLayout();
-        }
+        }*/
         if (darkMode) holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_dark));
         else holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_light));
     }

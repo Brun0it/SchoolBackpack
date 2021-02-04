@@ -6,9 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="20dp"
     android:layout_marginRight="10dp"
-    android:layout_marginBottom="10dp"
     android:background="@drawable/background_light"
     android:paddingLeft="20dp"
     android:paddingTop="10dp"
@@ -20,24 +19,35 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_bold"
         android:singleLine="true"
         android:text="Matiere"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/time"
-        app:layout_constraintEnd_toStartOf="@+id/time"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/time" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins_semibold"
         android:text="8h - 9h30"
-        android:textSize="24sp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="30m"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/teacher"
@@ -45,11 +55,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins"
         android:singleLine="true"
-        android:text="M. leprof"
+        android:text="Lieu | M. leprof"
         android:textColor="@color/grey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/name"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/time"
         app:layout_constraintTop_toBottomOf="@+id/time" />
 
     <LinearLayout
@@ -58,6 +67,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/teacher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -130,7 +140,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/teacher"
+        app:layout_constraintStart_toStartOf="@+id/time"
         app:layout_constraintTop_toBottomOf="@+id/space">
 
         <LinearLayout
@@ -184,5 +194,16 @@
                 android:textColor="@color/blue" />
         </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginEnd="4dp"
+        android:tint="@color/dark_grey"
+        app:layout_constraintBottom_toTopOf="@+id/time"
+        app:layout_constraintEnd_toStartOf="@+id/duration"
+        app:layout_constraintTop_toTopOf="@+id/name"
+        app:srcCompat="@drawable/ic_baseline_access_time_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
