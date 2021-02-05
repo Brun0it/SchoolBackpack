@@ -1,6 +1,7 @@
 package com.cours.schoolbackpack.ui.dashboard;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -30,8 +32,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DashboardFragment extends Fragment {
@@ -79,42 +84,62 @@ public class DashboardFragment extends Fragment {
         mondayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unselectAllDays();
-                selectDay(Calendar.MONDAY);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                selectDay();
             }
         });
         tuesdayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unselectAllDays();
-                selectDay(Calendar.TUESDAY);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+                selectDay();
             }
         });
         wednesdayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unselectAllDays();
-                selectDay(Calendar.WEDNESDAY);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+                selectDay();
             }
         });
         thursdayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unselectAllDays();
-                selectDay(Calendar.THURSDAY);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+                selectDay();
             }
         });
         fridayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unselectAllDays();
-                selectDay(Calendar.FRIDAY);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                selectDay();
             }
         });
 
         previousWeek = root.findViewById(R.id.previousWeek);
         nextWeek = root.findViewById(R.id.nextWeek);
         weekTextView = root.findViewById(R.id.weekTextView);
+        weekTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        updateDate(year, month, dayOfMonth);
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            }
+        });
+        weekTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                calendar = Calendar.getInstance();
+                updateDate();
+                return true;
+            }
+        });
 
         calendar = Calendar.getInstance();
         previousWeek.setOnClickListener(new View.OnClickListener() {
@@ -146,15 +171,22 @@ public class DashboardFragment extends Fragment {
             nextWeek.setColorFilter(Color.argb(255, 255, 255, 255));
         }
 
-        unselectAllDays();
         generateDays();
         updateDate();
-        selectDay(calendar.get(Calendar.DAY_OF_WEEK));
         return root;
+    }
+
+    public void updateDate(int year, int month, int dayOfMonth) {
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        weekNmb = calendar.get(Calendar.WEEK_OF_YEAR);
+        updateDate();
     }
 
     @SuppressLint("SetTextI18n")
     public void updateDate() {
+        int saveDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         Calendar localCalendar = calendar;
         weekNmb = localCalendar.get(Calendar.WEEK_OF_YEAR);
         int dayOfWeek;
@@ -184,6 +216,10 @@ public class DashboardFragment extends Fragment {
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) fridayNumber.setText(dayOfWeek + "");
         else fridayNumber.setText("0" + dayOfWeek);
+
+        localCalendar.set(Calendar.DAY_OF_WEEK, saveDayOfWeek);
+
+        selectDay();
     }
 
     public void displayList(@NotNull Day day) {
@@ -255,30 +291,32 @@ public class DashboardFragment extends Fragment {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    public void selectDay(int dayOfWeek) {
-        switch (dayOfWeek) {
-            case Calendar.MONDAY:
+    public void selectDay() {
+        unselectAllDays();
+        Log.e("DashboardFragment", "selectDay > " + calendar.get(Calendar.DAY_OF_WEEK));
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+            case 2:
                 if (isDarkMode()) mondayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else mondayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 mondayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 mondayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(monday);
                 break;
-            case Calendar.TUESDAY:
+            case 3:
                 if (isDarkMode()) tuesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else tuesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 tuesdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 tuesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(tuesday);
                 break;
-            case Calendar.WEDNESDAY:
+            case 4:
                 if (isDarkMode()) wednesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else wednesdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 wednesdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
                 wednesdayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(wednesday);
                 break;
-            case Calendar.THURSDAY:
+            case 5:
                 if (isDarkMode()) thursdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else thursdayLayout.setBackground(getActivity().getDrawable(R.drawable.day_background_pink));
                 thursdayName.setTextColor(getActivity().getResources().getColor(R.color.dark_grey));
@@ -293,7 +331,7 @@ public class DashboardFragment extends Fragment {
                 displayList(friday);
                 break;
         }
-        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+        //calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
