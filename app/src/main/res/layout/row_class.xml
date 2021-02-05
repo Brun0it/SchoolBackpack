@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:layout_marginTop="20dp"
+    android:layout_marginTop="25dp"
     android:layout_marginRight="10dp"
     android:background="@drawable/background_light"
     android:paddingLeft="20dp"
@@ -23,7 +23,7 @@
         android:singleLine="true"
         android:text="Matiere"
         android:textSize="22sp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/durationLogo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,9 +45,9 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="30m"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/durationLogo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="@+id/durationLogo" />
 
     <TextView
         android:id="@+id/teacher"
@@ -130,7 +130,6 @@
         android:id="@+id/space"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/teacher" />
@@ -144,9 +143,10 @@
         app:layout_constraintTop_toBottomOf="@+id/space">
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/evaluationLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginRight="12dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -158,6 +158,7 @@
                 app:tint="@color/pink" />
 
             <TextView
+                android:id="@+id/evaluationText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
@@ -169,10 +170,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout4"
+            android:id="@+id/exerciceLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -184,6 +184,7 @@
                 app:tint="@color/blue" />
 
             <TextView
+                android:id="@+id/exerciceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
@@ -196,14 +197,14 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/durationLogo"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginEnd="4dp"
-        android:tint="@color/dark_grey"
         app:layout_constraintBottom_toTopOf="@+id/time"
         app:layout_constraintEnd_toStartOf="@+id/duration"
         app:layout_constraintTop_toTopOf="@+id/name"
-        app:srcCompat="@drawable/ic_baseline_access_time_24" />
+        app:srcCompat="@drawable/ic_baseline_access_time_24"
+        app:tint="@color/dark_grey" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

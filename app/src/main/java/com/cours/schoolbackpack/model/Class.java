@@ -4,31 +4,26 @@ import java.sql.Time;
 import java.util.Calendar;
 
 public class Class {
-    private String name;
+    private Subject subject;
     private String classroom;
-    private String teacher;
     private Calendar time;
     private int duration;
 
-    public Class(String name, String classroom, String teacher, Calendar time, int duration) {
-        this.name = name;
+    public Class(Subject subject, String classroom, Calendar time, int duration) {
+        this.subject = subject;
         this.classroom = classroom;
-        this.teacher = teacher;
         this.time = time;
         this.duration = duration;
     }
 
-    public String getName() {
-        return name;
+    public Subject getSubject() {
+        return subject;
     }
 
     public String getClassroom() {
         return classroom;
     }
 
-    public String getTeacher() {
-        return teacher;
-    }
 
     public String getTime() {
         String hour = time.getTime().getHours() + "";

@@ -1,6 +1,8 @@
 package com.cours.schoolbackpack.ui.dashboard;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +18,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cours.schoolbackpack.controller.NewDevoirDialog;
 import com.cours.schoolbackpack.model.Class;
 import com.cours.schoolbackpack.controller.ClassAdapter;
 import com.cours.schoolbackpack.model.Day;
 import com.cours.schoolbackpack.R;
+import com.cours.schoolbackpack.model.Devoir;
+import com.cours.schoolbackpack.model.Subject;
 import com.cours.schoolbackpack.ui.Week;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +46,8 @@ public class DashboardFragment extends Fragment {
     private Week week = new Week();
     private Calendar calendar;
     private int weekNmb;
+    private List<Devoir> devoirs = new ArrayList<>();
+    private FloatingActionButton newDevoir;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -106,7 +116,6 @@ public class DashboardFragment extends Fragment {
         nextWeek = root.findViewById(R.id.nextWeek);
         weekTextView = root.findViewById(R.id.weekTextView);
 
-
         calendar = Calendar.getInstance();
         previousWeek.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,14 +132,28 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        updateDate();
+        newDevoir = root.findViewById(R.id.newDevoir);
+        Fragment fragment = this;
+        newDevoir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new NewDevoirDialog().showDialog(getActivity(), fragment);
+            }
+        });
+
+        if (isDarkMode()) {
+            previousWeek.setColorFilter(Color.argb(255, 255, 255, 255));
+            nextWeek.setColorFilter(Color.argb(255, 255, 255, 255));
+        }
+
         unselectAllDays();
         generateDays();
-        selectDay(calendar.get(Calendar.DAY_OF_WEEK)-1);
-        Log.e("DashboardFrag",  calendar.get(Calendar.DAY_OF_WEEK) + "");
+        updateDate();
+        selectDay(calendar.get(Calendar.DAY_OF_WEEK));
         return root;
     }
 
+    @SuppressLint("SetTextI18n")
     public void updateDate() {
         Calendar localCalendar = calendar;
         weekNmb = localCalendar.get(Calendar.WEEK_OF_YEAR);
@@ -163,7 +186,7 @@ public class DashboardFragment extends Fragment {
         else fridayNumber.setText("0" + dayOfWeek);
     }
 
-    public void displayList(Day day) {
+    public void displayList(@NotNull Day day) {
         displayList(day.getClasses());
     }
 
@@ -172,14 +195,12 @@ public class DashboardFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        ClassAdapter classAdapter = new ClassAdapter(classes, getActivity(), getContext(), this, isDarkMode());
+        ClassAdapter classAdapter = new ClassAdapter(classes, devoirs, calendar, getActivity(), getContext(), this, isDarkMode());
         recyclerView.setAdapter(classAdapter);
 
     }
 
     public void generateDays() {
-        List<Class> classes = new ArrayList<>();
-
         Calendar time1 = Calendar.getInstance();
         Calendar time2 = Calendar.getInstance();
         Calendar time3 = Calendar.getInstance();
@@ -199,23 +220,41 @@ public class DashboardFragment extends Fragment {
         time6.set(Calendar.HOUR_OF_DAY, 14);
         time6.set(Calendar.MINUTE, 0);
 
-        monday.add(new Class("Maths", "Amphi 2", "M. Corbiere", time1, 30));
-        monday.add(new Class("Anglais", "TD4", "M. Corbiere", time2, 150));
-        monday.add(new Class("Espagnol", "TD4", "M. Hamon", time3, 180));
+        Subject maths = new Subject("Maths", "M. Walkowiak");
+        Subject anglais = new Subject("Anglais", "M. Roulin");
+        Subject francais = new Subject("Français", "Mme Vieillard");
+        Subject allemand = new Subject("Allemand", "Mme Piau");
+        Subject sport = new Subject("Sport", "M. Hamon");
+        Subject histoireGeo = new Subject("Histoire Géo", "M. Venant");
 
-        tuesday.add(new Class("Allemand", "TD4", "Mme Vieillard", time3, 180));
-        tuesday.add(new Class("Sport", "TD4", "M. Roulin", time4, 90));
+        monday.add(new Class(maths, "Amphi 2", time1, 30));
+        monday.add(new Class(anglais, "TD4", time2, 150));
+        monday.add(new Class(francais, "TD4", time3, 180));
 
-        wednesday.add(new Class("Histoire Géo", "TD4", "M. Walkowiak", time1, 180));
-        wednesday.add(new Class("Français", "TD4", "M. Ernet", time3, 180));
+        tuesday.add(new Class(allemand, "TD4", time3, 180));
+        tuesday.add(new Class(sport, "TD4", time4, 90));
 
-        thursday.add(new Class("Latin", "TP3", "M. Laforcade", time3, 180));
+        wednesday.add(new Class(histoireGeo, "TD4", time1, 180));
+        wednesday.add(new Class(francais, "TD4", time3, 180));
 
-        friday.add(new Class("Physique Chimie", "TD4", "M. Ernet", time5, 90));
-        friday.add(new Class("Musique", "TD4", "M. Walkowiak", time2, 180));
-        friday.add(new Class("Art-Plastique", "TD4", "M. Walkowiak", time6, 90));
+        thursday.add(new Class(maths, "TP3", time3, 180));
+
+        friday.add(new Class(allemand, "TD4", time5, 90));
+        friday.add(new Class(maths, "TD4", time2, 180));
+        friday.add(new Class(anglais, "TD4", time6, 90));
+
+        Devoir eval1 = new Devoir(allemand, Calendar.getInstance(), "eval1", true);
+        Devoir exo1 = new Devoir(maths, Calendar.getInstance(), "exo1", false);
+        Devoir exo2 = new Devoir(maths, Calendar.getInstance(), "exo2", false);
+        Devoir exo3 = new Devoir(francais, Calendar.getInstance(), "exo3", false);
+
+        devoirs.add(eval1);
+        devoirs.add(exo1);
+        devoirs.add(exo2);
+        devoirs.add(exo3);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void selectDay(int dayOfWeek) {
         switch (dayOfWeek) {
             case Calendar.MONDAY:
@@ -253,10 +292,11 @@ public class DashboardFragment extends Fragment {
                 fridayNumber.setTextColor(getActivity().getResources().getColor(R.color.pink));
                 displayList(friday);
                 break;
-
         }
+        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void unselectAllDays() {
         if (isDarkMode()) {
             header.setBackground(getActivity().getResources().getDrawable(R.drawable.header_dark));
@@ -298,11 +338,6 @@ public class DashboardFragment extends Fragment {
     }
 
     public boolean isDarkMode() {
-        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
-            case Configuration.UI_MODE_NIGHT_YES:
-                return true;
-            default:
-                return false;
-        }
+        return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
     }
 }
