@@ -43,11 +43,15 @@ public class DashboardFragment extends Fragment {
     private ConstraintLayout header, mondayLayout, tuesdayLayout, wednesdayLayout, thursdayLayout, fridayLayout;
     private TextView mondayName, tuesdayName, wednesdayName, thursdayName, fridayName, mondayNumber, tuesdayNumber, wednesdayNumber, thursdayNumber, fridayNumber, weekTextView;
     private ImageButton previousWeek, nextWeek;
-    private Day monday = new Day(), tuesday= new Day(), wednesday= new Day(), thursday= new Day(), friday= new Day();
-    private Week week = new Week();
+    private final Day monday = new Day();
+    private final Day tuesday= new Day();
+    private final Day wednesday= new Day();
+    private final Day thursday= new Day();
+    private final Day friday= new Day();
+    private final Week week = new Week();
     private Calendar calendar;
     private int weekNmb;
-    private List<Devoir> devoirs = new ArrayList<>();
+    private final List<Devoir> devoirs = new ArrayList<>();
     private FloatingActionButton newDevoir;
 
     public View onCreateView(@NonNull LayoutInflater inflater,

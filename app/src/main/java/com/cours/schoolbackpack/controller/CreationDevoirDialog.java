@@ -1,11 +1,11 @@
 package com.cours.schoolbackpack.controller;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,10 +14,10 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cours.schoolbackpack.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CreationDevoirDialog {
 
+    @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public static void showDialog(final Activity activity, Boolean evaluation){
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -42,9 +42,7 @@ public class CreationDevoirDialog {
             textPlain.setTextColor(activity.getResources().getColor(R.color.white));
         }
 
-        close.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
+        close.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
