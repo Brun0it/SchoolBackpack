@@ -1,33 +1,21 @@
 package com.cours.schoolbackpack.controller;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 
 import com.cours.schoolbackpack.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 public class NewDevoirDialog {
 
-    public static void showDialog(final Activity mainActivity, Fragment fragment){
-        final Dialog dialog = new Dialog(mainActivity);
+    public static void showDialog(final Activity activity){
+        final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_new_devoir);
@@ -35,28 +23,22 @@ public class NewDevoirDialog {
         FloatingActionButton close = dialog.findViewById(R.id.close);
         Button addEvaluation = dialog.findViewById(R.id.addEvaluation);
         Button addExercice = dialog.findViewById(R.id.addExercice);
+        TextView background = dialog.findViewById(R.id.backgroundText);
+        Spinner matieres = dialog.findViewById(R.id.matieres);
 
-
-        addEvaluation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        addEvaluation.setOnClickListener(v -> {
+            new CreationDevoirDialog().showDialog(activity, true);
+            dialog.dismiss();
         });
 
-        addExercice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        addExercice.setOnClickListener(v -> {
+            new CreationDevoirDialog().showDialog(activity, false);
+            dialog.dismiss();
         });
 
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        close.setOnClickListener(v -> dialog.dismiss());
+
+        background  .setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }

@@ -1,4 +1,4 @@
-package com.cours.schoolbackpack.ui;
+package com.cours.schoolbackpack.model;
 
 import com.cours.schoolbackpack.model.Day;
 
