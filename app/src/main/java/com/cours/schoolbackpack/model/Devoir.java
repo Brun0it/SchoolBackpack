@@ -8,6 +8,7 @@ public class Devoir {
     private Calendar date;
     private String notes;
     private Boolean evaluation;
+    private Boolean fait;
 
     public Devoir(Subject subject, Calendar date, String notes, Boolean evaluation) {
         this.subject = subject;
@@ -30,5 +31,13 @@ public class Devoir {
 
     public Boolean isEvaluation() {
         return evaluation;
+    }
+
+    public void setFait(Boolean fait) {
+        this.fait = fait;
+    }
+
+    public Boolean getFait() {
+        return fait;
     }
 }

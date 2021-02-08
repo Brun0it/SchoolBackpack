@@ -1,11 +1,10 @@
-package com.cours.schoolbackpack.ui.dashboard;
+package com.cours.schoolbackpack.ui.devoirs;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +12,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cours.schoolbackpack.R;
+import com.cours.schoolbackpack.controller.ClassAdapter;
+import com.cours.schoolbackpack.controller.DevoirAdapter;
 import com.cours.schoolbackpack.controller.NewDevoirDialog;
 import com.cours.schoolbackpack.model.Class;
-import com.cours.schoolbackpack.controller.ClassAdapter;
 import com.cours.schoolbackpack.model.Day;
-import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.model.Devoir;
 import com.cours.schoolbackpack.model.Subject;
-import com.cours.schoolbackpack.model.Week;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,10 +36,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class DashboardFragment extends Fragment {
+public class DevoirsFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
-    private RecyclerView.LayoutManager layoutManager;
+    private DevoirsViewModel devoirsViewModel;
     private RecyclerView recyclerView;
     private ConstraintLayout header, mondayLayout, tuesdayLayout, wednesdayLayout, thursdayLayout, fridayLayout;
     private TextView mondayName, tuesdayName, wednesdayName, thursdayName, fridayName, mondayNumber, tuesdayNumber, wednesdayNumber, thursdayNumber, fridayNumber, weekTextView;
@@ -48,18 +48,17 @@ public class DashboardFragment extends Fragment {
     private final Day wednesday= new Day();
     private final Day thursday= new Day();
     private final Day friday= new Day();
-    private final Week week = new Week();
-    private Calendar calendar;
+    private List<Devoir> devoirs = new ArrayList<>();
+    private Calendar calendar = Calendar.getInstance();
     private int weekNmb;
-    private final List<Devoir> devoirs = new ArrayList<>();
     private FloatingActionButton newDevoir;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
+        devoirsViewModel =
+                new ViewModelProvider(this).get(DevoirsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_devoirs, container, false);
         recyclerView = root.findViewById(R.id.recyclerView);
         header = root.findViewById(R.id.header);
 
@@ -139,6 +138,77 @@ public class DashboardFragment extends Fragment {
         return root;
     }
 
+    public void generateDays() {
+        Calendar time1 = Calendar.getInstance();
+        Calendar time2 = Calendar.getInstance();
+        Calendar time3 = Calendar.getInstance();
+        Calendar time4 = Calendar.getInstance();
+        Calendar time5 = Calendar.getInstance();
+        Calendar time6 = Calendar.getInstance();
+        time1.set(Calendar.HOUR_OF_DAY, 9);
+        time1.set(Calendar.MINUTE, 0);
+        time2.set(Calendar.HOUR_OF_DAY, 9);
+        time2.set(Calendar.MINUTE, 30);
+        time2.add(Calendar.DAY_OF_YEAR, 2);
+        time3.set(Calendar.HOUR_OF_DAY, 13);
+        time3.set(Calendar.MINUTE, 30);
+        time4.set(Calendar.HOUR_OF_DAY, 16);
+        time4.set(Calendar.MINUTE, 30);
+        time5.set(Calendar.HOUR_OF_DAY, 8);
+        time5.set(Calendar.MINUTE, 0);
+        time6.set(Calendar.HOUR_OF_DAY, 14);
+        time6.set(Calendar.MINUTE, 0);
+
+        Subject maths = new Subject("Maths", "M. Walkowiak");
+        Subject anglais = new Subject("Anglais", "M. Roulin");
+        Subject francais = new Subject("Français", "Mme Vieillard");
+        Subject allemand = new Subject("Allemand", "Mme Piau");
+        Subject sport = new Subject("Sport", "M. Hamon");
+        Subject histoireGeo = new Subject("Histoire Géo", "M. Venant");
+
+        monday.add(new Class(maths, "Amphi 2", time1, 30));
+        monday.add(new Class(anglais, "TD4", time2, 150));
+        monday.add(new Class(francais, "TD4", time3, 180));
+
+        tuesday.add(new Class(allemand, "TD4", time3, 180));
+        tuesday.add(new Class(sport, "TD4", time4, 90));
+
+        wednesday.add(new Class(histoireGeo, "TD4", time1, 180));
+        wednesday.add(new Class(francais, "TD4", time3, 180));
+
+        thursday.add(new Class(maths, "TP3", time3, 180));
+
+        friday.add(new Class(allemand, "TD4", time5, 90));
+        friday.add(new Class(maths, "TD4", time2, 180));
+        friday.add(new Class(anglais, "TD4", time6, 90));
+
+        Devoir eval1 = new Devoir(allemand, time2, "eval1", true);
+        Devoir exo1 = new Devoir(maths, Calendar.getInstance(), "exo1", false);
+        Devoir exo2 = new Devoir(maths, Calendar.getInstance(), "exo2", false);
+        Devoir exo3 = new Devoir(francais, Calendar.getInstance(), "exo3", false);
+
+        devoirs.add(eval1);
+        devoirs.add(exo1);
+        devoirs.add(exo2);
+        devoirs.add(exo3);
+    }
+
+    public void displayList(List<Devoir> devoirs) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        DevoirAdapter devoirAdapter = new DevoirAdapter(devoirs, getActivity(), getContext(), this, isDarkMode());
+        recyclerView.setAdapter(devoirAdapter);
+    }
+
+    public void displayList(@NotNull Calendar date) {
+        List<Devoir> devoirs = new ArrayList<>();
+        for(int i=0; i<this.devoirs.size(); i++){
+            if(this.devoirs.get(i).getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && this.devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) devoirs.add(this.devoirs.get(i));
+        }
+        displayList(devoirs);
+    }
+
     public void updateDate(int year, int month, int dayOfMonth) {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
@@ -185,74 +255,6 @@ public class DashboardFragment extends Fragment {
         selectDay();
     }
 
-    public void displayList(@NotNull Day day) {
-        displayList(day.getClasses());
-    }
-
-    public void displayList(List<Class> classes) {
-
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        ClassAdapter classAdapter = new ClassAdapter(classes, devoirs, calendar, getActivity(), getContext(), this, isDarkMode());
-        recyclerView.setAdapter(classAdapter);
-
-    }
-
-    public void generateDays() {
-        Calendar time1 = Calendar.getInstance();
-        Calendar time2 = Calendar.getInstance();
-        Calendar time3 = Calendar.getInstance();
-        Calendar time4 = Calendar.getInstance();
-        Calendar time5 = Calendar.getInstance();
-        Calendar time6 = Calendar.getInstance();
-        time1.set(Calendar.HOUR_OF_DAY, 9);
-        time1.set(Calendar.MINUTE, 0);
-        time2.set(Calendar.HOUR_OF_DAY, 9);
-        time2.set(Calendar.MINUTE, 30);
-        time3.set(Calendar.HOUR_OF_DAY, 13);
-        time3.set(Calendar.MINUTE, 30);
-        time4.set(Calendar.HOUR_OF_DAY, 16);
-        time4.set(Calendar.MINUTE, 30);
-        time5.set(Calendar.HOUR_OF_DAY, 8);
-        time5.set(Calendar.MINUTE, 0);
-        time6.set(Calendar.HOUR_OF_DAY, 14);
-        time6.set(Calendar.MINUTE, 0);
-
-        Subject maths = new Subject("Maths", "M. Walkowiak");
-        Subject anglais = new Subject("Anglais", "M. Roulin");
-        Subject francais = new Subject("Français", "Mme Vieillard");
-        Subject allemand = new Subject("Allemand", "Mme Piau");
-        Subject sport = new Subject("Sport", "M. Hamon");
-        Subject histoireGeo = new Subject("Histoire Géo", "M. Venant");
-
-        monday.add(new Class(maths, "Amphi 2", time1, 30));
-        monday.add(new Class(anglais, "TD4", time2, 150));
-        monday.add(new Class(francais, "TD4", time3, 180));
-
-        tuesday.add(new Class(allemand, "TD4", time3, 180));
-        tuesday.add(new Class(sport, "TD4", time4, 90));
-
-        wednesday.add(new Class(histoireGeo, "TD4", time1, 180));
-        wednesday.add(new Class(francais, "TD4", time3, 180));
-
-        thursday.add(new Class(maths, "TP3", time3, 180));
-
-        friday.add(new Class(allemand, "TD4", time5, 90));
-        friday.add(new Class(maths, "TD4", time2, 180));
-        friday.add(new Class(anglais, "TD4", time6, 90));
-
-        Devoir eval1 = new Devoir(allemand, Calendar.getInstance(), "eval1", true);
-        Devoir exo1 = new Devoir(maths, Calendar.getInstance(), "exo1", false);
-        Devoir exo2 = new Devoir(maths, Calendar.getInstance(), "exo2", false);
-        Devoir exo3 = new Devoir(francais, Calendar.getInstance(), "exo3", false);
-
-        devoirs.add(eval1);
-        devoirs.add(exo1);
-        devoirs.add(exo2);
-        devoirs.add(exo3);
-    }
-
     @SuppressLint("UseCompatLoadingForDrawables")
     public void selectDay() {
         unselectAllDays();
@@ -262,35 +264,35 @@ public class DashboardFragment extends Fragment {
                 else mondayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink));
                 mondayName.setTextColor(requireActivity().getResources().getColor(R.color.dark_grey));
                 mondayNumber.setTextColor(requireActivity().getResources().getColor(R.color.pink));
-                displayList(monday);
+                displayList(calendar);
                 break;
             case 3:
                 if (isDarkMode()) tuesdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else tuesdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink));
                 tuesdayName.setTextColor(requireActivity().getResources().getColor(R.color.dark_grey));
                 tuesdayNumber.setTextColor(requireActivity().getResources().getColor(R.color.pink));
-                displayList(tuesday);
+                displayList(calendar);
                 break;
             case 4:
                 if (isDarkMode()) wednesdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else wednesdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink));
                 wednesdayName.setTextColor(requireActivity().getResources().getColor(R.color.dark_grey));
                 wednesdayNumber.setTextColor(requireActivity().getResources().getColor(R.color.pink));
-                displayList(wednesday);
+                displayList(calendar);
                 break;
             case 5:
                 if (isDarkMode()) thursdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else thursdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink));
                 thursdayName.setTextColor(requireActivity().getResources().getColor(R.color.dark_grey));
                 thursdayNumber.setTextColor(requireActivity().getResources().getColor(R.color.pink));
-                displayList(thursday);
+                displayList(calendar);
                 break;
             case 6:
                 if (isDarkMode()) fridayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink_dm));
                 else fridayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink));
                 fridayName.setTextColor(requireActivity().getResources().getColor(R.color.dark_grey));
                 fridayNumber.setTextColor(requireActivity().getResources().getColor(R.color.pink));
-                displayList(friday);
+                displayList(calendar);
                 break;
             default:
                 calendar.add(Calendar.DAY_OF_YEAR, 2);

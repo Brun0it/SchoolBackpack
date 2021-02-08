@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_edt">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.cours.schoolbackpack.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_devoir"
+        android:name="com.cours.schoolbackpack.ui.devoirs.DevoirsFragment"
+        android:label="@string/title_devoirs"
+        tools:layout="@layout/fragment_devoirs" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.cours.schoolbackpack.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_edt"
+        android:name="com.cours.schoolbackpack.ui.edt.EdtFragment"
+        android:label="@string/title_edt"
+        tools:layout="@layout/fragment_edt" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.cours.schoolbackpack.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_profil"
+        android:name="com.cours.schoolbackpack.ui.profil.ProfilFragment"
+        android:label="@string/title_profil"
+        tools:layout="@layout/fragment_profil" />
 </navigation>
