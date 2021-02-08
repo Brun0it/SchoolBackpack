@@ -256,7 +256,6 @@ public class DashboardFragment extends Fragment {
     @SuppressLint("UseCompatLoadingForDrawables")
     public void selectDay() {
         unselectAllDays();
-        Log.e("DashboardFragment", "selectDay > " + calendar.get(Calendar.DAY_OF_WEEK));
         switch (calendar.get(Calendar.DAY_OF_WEEK)) {
             case 2:
                 if (isDarkMode()) mondayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_pink_dm));

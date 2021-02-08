@@ -31,19 +31,51 @@
             android:id="@+id/matieres"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
-        <Spinner
-            android:id="@+id/date"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/matieres" />
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/matieres"
+            app:layout_constraintStart_toStartOf="@+id/matieres"
+            app:layout_constraintTop_toBottomOf="@+id/matieres">
+
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="13/11/2001"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/nextSubject"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="8dp"
+                app:srcCompat="@drawable/ic_baseline_next_plan_24"
+                app:tint="@color/pink" />
+
+            <ImageView
+                android:id="@+id/selectDate"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/ic_baseline_today_24"
+                app:tint="@color/pink" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/textPlain"
@@ -57,18 +89,18 @@
             android:hint="Travail à réaliser"
             android:inputType="textMultiLine|textCapSentences"
             android:padding="10dp"
-            android:textColor="@color/dark_grey"
+            android:textColor="@color/darkBackground"
             android:textColorHint="@color/grey"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <Button
             android:id="@+id/add"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="@color/blue"
             android:fontFamily="@font/poppins_semibold"
             android:paddingLeft="42dp"
