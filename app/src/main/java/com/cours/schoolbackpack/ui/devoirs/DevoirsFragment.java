@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cours.schoolbackpack.R;
+import com.cours.schoolbackpack.controller.CategoryDevoirAdapter;
 import com.cours.schoolbackpack.controller.ClassAdapter;
 import com.cours.schoolbackpack.controller.DevoirAdapter;
 import com.cours.schoolbackpack.controller.NewDevoirDialog;
@@ -52,7 +54,11 @@ public class DevoirsFragment extends Fragment {
     private Calendar calendar = Calendar.getInstance();
     private int weekNmb;
     private FloatingActionButton newDevoir;
+    private ImageView redMon, redTue, redWed, redThu, redFri, blueMon, blueTue, blueWed, blueThu, blueFri;
 
+    public Calendar getCalendar() {
+        return calendar;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -79,6 +85,17 @@ public class DevoirsFragment extends Fragment {
         wednesdayNumber = root.findViewById(R.id.wednesdayNumber);
         thursdayNumber = root.findViewById(R.id.thursdayNumber);
         fridayNumber = root.findViewById(R.id.fridayNumber);
+
+        redMon = root.findViewById(R.id.redMon);
+        redTue = root.findViewById(R.id.redTue);
+        redWed = root.findViewById(R.id.redWed);
+        redThu = root.findViewById(R.id.redThu);
+        redFri = root.findViewById(R.id.redFri);
+        blueMon = root.findViewById(R.id.redMon);
+        blueTue = root.findViewById(R.id.blueTue);
+        blueWed = root.findViewById(R.id.blueWed);
+        blueThu = root.findViewById(R.id.blueThu);
+        blueFri = root.findViewById(R.id.blueFri);
 
         mondayLayout.setOnClickListener(v -> {
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -149,7 +166,7 @@ public class DevoirsFragment extends Fragment {
         time1.set(Calendar.MINUTE, 0);
         time2.set(Calendar.HOUR_OF_DAY, 9);
         time2.set(Calendar.MINUTE, 30);
-        time2.add(Calendar.DAY_OF_YEAR, 2);
+        time2.add(Calendar.DAY_OF_YEAR, 1);
         time3.set(Calendar.HOUR_OF_DAY, 13);
         time3.set(Calendar.MINUTE, 30);
         time4.set(Calendar.HOUR_OF_DAY, 16);
@@ -185,28 +202,49 @@ public class DevoirsFragment extends Fragment {
         Devoir eval1 = new Devoir(allemand, time2, "eval1", true);
         Devoir exo1 = new Devoir(maths, Calendar.getInstance(), "exo1", false);
         Devoir exo2 = new Devoir(maths, Calendar.getInstance(), "exo2", false);
-        Devoir exo3 = new Devoir(francais, Calendar.getInstance(), "exo3", false);
+        Devoir exo3 = new Devoir(francais, time2, "exo3", false);
+        Devoir exo4 = new Devoir(sport, time2, "exo4", false);
 
+        exo4.setFait(true);
         devoirs.add(eval1);
         devoirs.add(exo1);
         devoirs.add(exo2);
         devoirs.add(exo3);
+        devoirs.add(exo4);
     }
 
     public void displayList(List<Devoir> devoirs) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        DevoirAdapter devoirAdapter = new DevoirAdapter(devoirs, getActivity(), getContext(), this, isDarkMode());
-        recyclerView.setAdapter(devoirAdapter);
+        List<Devoir> evaluations = new ArrayList<>();
+        List<Devoir> exNFait = new ArrayList<>();
+        List<Devoir> exFait = new ArrayList<>();
+        for(int i=0; i<devoirs.size(); i++) {
+            if (devoirs.get(i).isEvaluation()) evaluations.add(devoirs.get(i));
+            else if (!devoirs.get(i).getFait()) exNFait.add(devoirs.get(i));
+            else exFait.add(devoirs.get(i));
+        }
+
+        List<List<Devoir>> shortedDevoirs = new ArrayList<>();
+        shortedDevoirs.add(evaluations);
+        shortedDevoirs.add(exNFait);
+        shortedDevoirs.add(exFait);
+
+        CategoryDevoirAdapter categoryDevoirAdapter = new CategoryDevoirAdapter(shortedDevoirs, getActivity(), getContext(), this, isDarkMode());
+        recyclerView.setAdapter(categoryDevoirAdapter);
     }
 
     public void displayList(@NotNull Calendar date) {
+        displayList(getDevoirs(date));
+    }
+
+    public List<Devoir> getDevoirs(Calendar calendar){
         List<Devoir> devoirs = new ArrayList<>();
         for(int i=0; i<this.devoirs.size(); i++){
-            if(this.devoirs.get(i).getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && this.devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) devoirs.add(this.devoirs.get(i));
+            if(this.devoirs.get(i).getDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && this.devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR)) devoirs.add(this.devoirs.get(i));
         }
-        displayList(devoirs);
+        return devoirs;
     }
 
     public void updateDate(int year, int month, int dayOfMonth) {
@@ -229,26 +267,31 @@ public class DevoirsFragment extends Fragment {
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) mondayNumber.setText(dayOfWeek + "");
         else mondayNumber.setText("0" + dayOfWeek);
+        badgeGesture(localCalendar, redMon, blueMon);
 
         localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) tuesdayNumber.setText(dayOfWeek + "");
         else tuesdayNumber.setText("0" + dayOfWeek);
+        badgeGesture(localCalendar, redTue, blueTue);
 
         localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) wednesdayNumber.setText(dayOfWeek + "");
         else wednesdayNumber.setText("0" + dayOfWeek);
+        badgeGesture(localCalendar, redWed, blueWed);
 
         localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) thursdayNumber.setText(dayOfWeek + "");
         else thursdayNumber.setText("0" + dayOfWeek);
+        badgeGesture(localCalendar, redThu, blueThu);
 
         localCalendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         dayOfWeek = localCalendar.get(Calendar.DAY_OF_MONTH);
         if (dayOfWeek >= 10) fridayNumber.setText(dayOfWeek + "");
         else fridayNumber.setText("0" + dayOfWeek);
+        badgeGesture(localCalendar, redFri, blueFri);
 
         localCalendar.set(Calendar.DAY_OF_WEEK, saveDayOfWeek);
 
@@ -345,5 +388,12 @@ public class DevoirsFragment extends Fragment {
 
     public boolean isDarkMode() {
         return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    public void badgeGesture(Calendar calendar, ImageView red, ImageView blue){
+        for(int i=0; i<getDevoirs(calendar).size() && (red.getVisibility() == View.GONE || blue.getVisibility() == View.GONE); i++){
+            if (getDevoirs(calendar).get(i).isEvaluation()) red.setVisibility(View.VISIBLE);
+            else blue.setVisibility(View.VISIBLE);
+        }
     }
 }
