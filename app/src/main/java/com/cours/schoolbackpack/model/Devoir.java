@@ -8,7 +8,7 @@ public class Devoir {
     private Calendar date;
     private String notes;
     private Boolean evaluation;
-    private Boolean fait;
+    private Boolean fait = false;
 
     public Devoir(Subject subject, Calendar date, String notes, Boolean evaluation) {
         this.subject = subject;

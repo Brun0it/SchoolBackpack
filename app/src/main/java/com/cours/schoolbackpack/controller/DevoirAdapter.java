@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.model.Class;
 import com.cours.schoolbackpack.model.Devoir;
+import com.cours.schoolbackpack.ui.devoirs.DevoirsFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,16 +74,21 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.DevoirAdap
         holder.note.setText(devoir.getNotes());
 
         if(devoir.isEvaluation()) holder.button.setVisibility(View.GONE);
+        if(devoir.getFait()) {
+            holder.button.setImageResource(R.drawable.ic_baseline_close_24);
+            holder.button.setBackgroundTintList(activity.getResources().getColorStateList(R.color.grey));
+        }
 
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 devoir.setFait(!devoir.getFait());
+                ((DevoirsFragment) fragment).displayList(((DevoirsFragment) fragment).getCalendar());
             }
         });
 
-        if (darkMode) holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_dark));
-        else holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_light));
+        if (darkMode) holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_dark_devoirs));
+        else holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_light_devoirs));
 
     }
 

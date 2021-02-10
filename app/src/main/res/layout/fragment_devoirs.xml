@@ -13,8 +13,10 @@
         android:layout_marginBottom="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/space2" />
+        app:layout_constraintTop_toTopOf="@+id/space2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newDevoir"
@@ -128,6 +130,35 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mondayNumber" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/mondayName"
+                    app:layout_constraintStart_toStartOf="@+id/mondayName"
+                    app:layout_constraintTop_toBottomOf="@+id/mondayName">
+
+                    <ImageView
+                        android:id="@+id/redMon"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_pink"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/blueMon"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_blue_text_plain"
+                        android:visibility="gone" />
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,6 +194,35 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tuesdayNumber" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/tuesdayName"
+                    app:layout_constraintStart_toStartOf="@+id/tuesdayName"
+                    app:layout_constraintTop_toBottomOf="@+id/tuesdayName">
+
+                    <ImageView
+                        android:id="@+id/redTue"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_pink"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/blueTue"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_blue_text_plain"
+                        android:visibility="gone" />
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -172,6 +232,35 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/day_background_light">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/wednesdayName"
+                    app:layout_constraintStart_toStartOf="@+id/wednesdayName"
+                    app:layout_constraintTop_toBottomOf="@+id/wednesdayName">
+
+                    <ImageView
+                        android:id="@+id/redWed"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_pink"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/blueWed"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_blue_text_plain"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/wednesdayNumber"
@@ -208,6 +297,35 @@
                 android:layout_weight="1"
                 android:background="@drawable/day_background_light">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/thursdayName"
+                    app:layout_constraintStart_toStartOf="@+id/thursdayName"
+                    app:layout_constraintTop_toBottomOf="@+id/thursdayName">
+
+                    <ImageView
+                        android:id="@+id/redThu"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_pink"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/blueThu"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_blue_text_plain"
+                        android:visibility="gone" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/thursdayNumber"
                     android:layout_width="wrap_content"
@@ -242,6 +360,35 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/day_background_light">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/fridayName"
+                    app:layout_constraintStart_toStartOf="@+id/fridayName"
+                    app:layout_constraintTop_toBottomOf="@+id/fridayName">
+
+                    <ImageView
+                        android:id="@+id/redFri"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_pink"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/blueFri"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/background_blue_text_plain"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/fridayNumber"
