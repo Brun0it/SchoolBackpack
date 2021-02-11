@@ -205,43 +205,59 @@ public class EdtFragment extends Fragment {
         Calendar time4 = Calendar.getInstance();
         Calendar time5 = Calendar.getInstance();
         Calendar time6 = Calendar.getInstance();
-        time1.set(Calendar.HOUR_OF_DAY, 9);
+        time1.set(Calendar.HOUR_OF_DAY, 8);
         time1.set(Calendar.MINUTE, 0);
         time2.set(Calendar.HOUR_OF_DAY, 9);
-        time2.set(Calendar.MINUTE, 30);
-        time3.set(Calendar.HOUR_OF_DAY, 13);
-        time3.set(Calendar.MINUTE, 30);
-        time4.set(Calendar.HOUR_OF_DAY, 16);
-        time4.set(Calendar.MINUTE, 30);
-        time5.set(Calendar.HOUR_OF_DAY, 8);
+        time2.set(Calendar.MINUTE, 0);
+        time3.set(Calendar.HOUR_OF_DAY, 10);
+        time3.set(Calendar.MINUTE, 0);
+        time4.set(Calendar.HOUR_OF_DAY, 11);
+        time4.set(Calendar.MINUTE, 0);
+        time5.set(Calendar.HOUR_OF_DAY, 13);
         time5.set(Calendar.MINUTE, 0);
         time6.set(Calendar.HOUR_OF_DAY, 14);
         time6.set(Calendar.MINUTE, 0);
 
-        Subject maths = new Subject("Maths", "M. Walkowiak");
-        Subject anglais = new Subject("Anglais", "M. Roulin");
-        Subject francais = new Subject("Français", "Mme Vieillard");
-        Subject allemand = new Subject("Allemand", "Mme Piau");
+
+        Subject francais = new Subject("Français", "Mme Martin");
+        Subject techno = new Subject("Technologie", "M. Dupont");
+        Subject anglais = new Subject("Anglais", "Mrs Smith");
+        Subject maths = new Subject("Mathématiques", "Mme Durand");
+        Subject svt = new Subject("SVT", "M. Jardin");
+        Subject histoireGeo = new Subject("Histoire Géo", "M. Bernard");
+        Subject lv2 = new Subject("LV2", "Mme Dubois");
+        Subject artplastique = new Subject("Arts Plastiques", "M. Thomas");
+        Subject musique = new Subject("Musique", "Mme Petit");
         Subject sport = new Subject("Sport", "M. Hamon");
-        Subject histoireGeo = new Subject("Histoire Géo", "M. Venant");
 
-        monday.add(new Class(maths, "Amphi 2", time1, 30));
-        monday.add(new Class(anglais, "TD4", time2, 150));
-        monday.add(new Class(francais, "TD4", time3, 180));
 
-        tuesday.add(new Class(allemand, "TD4", time3, 180));
-        tuesday.add(new Class(sport, "TD4", time4, 90));
 
-        wednesday.add(new Class(histoireGeo, "TD4", time1, 180));
-        wednesday.add(new Class(francais, "TD4", time3, 180));
 
-        thursday.add(new Class(maths, "TP3", time3, 180));
 
-        friday.add(new Class(allemand, "TD4", time5, 90));
-        friday.add(new Class(maths, "TD4", time2, 180));
-        friday.add(new Class(anglais, "TD4", time6, 90));
+        monday.add(new Class(francais, "A21", time1, 60));
+        monday.add(new Class(techno, "B12", time2, 60));
+        monday.add(new Class(anglais, "C15", time4, 60));
+        monday.add(new Class(maths, "E24", time5, 120));
 
-        Devoir eval1 = new Devoir(allemand, Calendar.getInstance(), "eval1", true);
+        tuesday.add(new Class(histoireGeo, "B13", time1, 60));
+        tuesday.add(new Class(anglais, "A12", time2, 60));
+        tuesday.add(new Class(lv2, "A01", time3, 60));
+        tuesday.add(new Class(artplastique, "B07", time5, 120));
+
+        wednesday.add(new Class(francais, "A21", time1, 60));
+        wednesday.add(new Class(histoireGeo, "B13", time2, 60));
+        wednesday.add(new Class(lv2, "D12", time4, 60));
+
+        thursday.add(new Class(maths, "C13", time1, 60));
+        thursday.add(new Class(techno, "B13", time3, 60));
+        thursday.add(new Class(francais, "D12", time4, 60));
+        thursday.add(new Class(musique, "B07", time6, 60));
+
+        friday.add(new Class(anglais, "E15", time2, 60));
+        friday.add(new Class(sport, "Gymnase", time3, 120));
+        friday.add(new Class(maths, "B13", time5, 60));
+
+        Devoir eval1 = new Devoir(lv2, Calendar.getInstance(), "eval1", true);
         Devoir exo1 = new Devoir(maths, Calendar.getInstance(), "exo1", false);
         Devoir exo2 = new Devoir(maths, Calendar.getInstance(), "exo2", false);
         Devoir exo3 = new Devoir(francais, Calendar.getInstance(), "exo3", false);

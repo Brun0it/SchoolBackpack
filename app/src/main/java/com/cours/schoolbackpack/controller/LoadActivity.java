@@ -1,4 +1,4 @@
-package com.cours.schoolbackpack;
+package com.cours.schoolbackpack.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.controller.MainActivity;
 
 public class LoadActivity extends AppCompatActivity {
