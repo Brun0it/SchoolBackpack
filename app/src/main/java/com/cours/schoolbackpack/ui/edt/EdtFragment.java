@@ -43,10 +43,10 @@ public class EdtFragment extends Fragment {
     private TextView mondayName, tuesdayName, wednesdayName, thursdayName, fridayName, mondayNumber, tuesdayNumber, wednesdayNumber, thursdayNumber, fridayNumber, weekTextView;
     private ImageButton previousWeek, nextWeek;
     private final Day monday = new Day();
-    private final Day tuesday= new Day();
-    private final Day wednesday= new Day();
-    private final Day thursday= new Day();
-    private final Day friday= new Day();
+    private final Day tuesday = new Day();
+    private final Day wednesday = new Day();
+    private final Day thursday = new Day();
+    private final Day friday = new Day();
     private final Week week = new Week();
     private Calendar calendar;
     private int weekNmb;
@@ -229,10 +229,6 @@ public class EdtFragment extends Fragment {
         Subject artplastique = new Subject("Arts Plastiques", "M. Thomas");
         Subject musique = new Subject("Musique", "Mme Petit");
         Subject sport = new Subject("Sport", "M. Hamon");
-
-
-
-
 
         monday.add(new Class(francais, "A21", time1, 60));
         monday.add(new Class(techno, "B12", time2, 60));

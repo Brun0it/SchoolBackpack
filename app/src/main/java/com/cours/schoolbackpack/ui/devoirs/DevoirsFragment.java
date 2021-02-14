@@ -91,7 +91,7 @@ public class DevoirsFragment extends Fragment {
         redWed = root.findViewById(R.id.redWed);
         redThu = root.findViewById(R.id.redThu);
         redFri = root.findViewById(R.id.redFri);
-        blueMon = root.findViewById(R.id.redMon);
+        blueMon = root.findViewById(R.id.blueMon);
         blueTue = root.findViewById(R.id.blueTue);
         blueWed = root.findViewById(R.id.blueWed);
         blueThu = root.findViewById(R.id.blueThu);
