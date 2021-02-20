@@ -53,6 +53,7 @@ public class DevoirsFragment extends Fragment {
     private List<Devoir> devoirs = new ArrayList<>();
     private Calendar calendar = Calendar.getInstance();
     private int weekNmb;
+    private ImageView currentDate;
     private FloatingActionButton newDevoir;
     private ImageView redMon, redTue, redWed, redThu, redFri, blueMon, blueTue, blueWed, blueThu, blueFri;
 
@@ -130,6 +131,12 @@ public class DevoirsFragment extends Fragment {
             calendar = Calendar.getInstance();
             updateDate();
             return true;
+        });
+
+        currentDate = root.findViewById(R.id.currentDate);
+        currentDate.setOnClickListener(v -> {
+            calendar = Calendar.getInstance();
+            updateDate();
         });
 
         calendar = Calendar.getInstance();
@@ -257,6 +264,12 @@ public class DevoirsFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     public void updateDate() {
+
+        if (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+                && calendar.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+            currentDate.setVisibility(View.GONE);
+        else currentDate.setVisibility(View.VISIBLE);
+
         int saveDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         Calendar localCalendar = calendar;
         weekNmb = localCalendar.get(Calendar.WEEK_OF_YEAR);

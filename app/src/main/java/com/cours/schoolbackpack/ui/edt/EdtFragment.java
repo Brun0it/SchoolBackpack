@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,7 @@ public class EdtFragment extends Fragment {
     private final Day thursday = new Day();
     private final Day friday = new Day();
     private final Week week = new Week();
+    private ImageView currentDate;
     private Calendar calendar;
     private int weekNmb;
     private final List<Devoir> devoirs = new ArrayList<>();
@@ -115,6 +117,12 @@ public class EdtFragment extends Fragment {
             return true;
         });
 
+        currentDate = root.findViewById(R.id.currentDate);
+        currentDate.setOnClickListener(v -> {
+            calendar = Calendar.getInstance();
+            updateDate();
+        });
+
         calendar = Calendar.getInstance();
         previousWeek.setOnClickListener(v -> {
             calendar.add(Calendar.HOUR_OF_DAY, -(24*7));
@@ -148,6 +156,12 @@ public class EdtFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     public void updateDate() {
+
+        if (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+                && calendar.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+            currentDate.setVisibility(View.GONE);
+        else currentDate.setVisibility(View.VISIBLE);
+
         int saveDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         Calendar localCalendar = calendar;
         weekNmb = localCalendar.get(Calendar.WEEK_OF_YEAR);
