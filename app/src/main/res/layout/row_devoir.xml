@@ -39,6 +39,7 @@
             android:id="@+id/matiere"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="TextView"
@@ -59,5 +60,14 @@
             app:layout_constraintStart_toStartOf="@+id/matiere"
             app:layout_constraintTop_toBottomOf="@+id/matiere" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/entete"
+        android:layout_width="15dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        app:layout_constraintTop_toTopOf="@+id/background"
+        app:srcCompat="@drawable/entete_devoir" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

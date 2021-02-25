@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +41,7 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.DevoirAdap
         TextView note;
         TextView matiere;
         ImageButton button;
+        ImageView entete;
         ConstraintLayout background;
 
         public DevoirAdapterViewHolder(View itemView) {
@@ -48,6 +50,7 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.DevoirAdap
             background = itemView.findViewById(R.id.background);
             matiere = itemView.findViewById(R.id.matiere);
             button = itemView.findViewById(R.id.button);
+            entete = itemView.findViewById(R.id.entete);
         }
     }
 
@@ -73,11 +76,14 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.DevoirAdap
         holder.matiere.setText(devoir.getSubject().getName());
         holder.note.setText(devoir.getNotes());
 
-        if(devoir.isEvaluation()) holder.button.setVisibility(View.GONE);
-        if(devoir.getFait()) {
+        if(devoir.isEvaluation()) {
+            holder.button.setVisibility(View.GONE);
+            holder.entete.setColorFilter(ContextCompat.getColor(context, R.color.pink), android.graphics.PorterDuff.Mode.SRC_IN);
+        } else if(devoir.getFait()) {
             holder.button.setImageResource(R.drawable.ic_baseline_close_24);
             holder.button.setBackgroundTintList(activity.getResources().getColorStateList(R.color.grey));
-        }
+            holder.entete.setColorFilter(ContextCompat.getColor(context, R.color.grey), android.graphics.PorterDuff.Mode.SRC_IN);
+        } else holder.entete.setColorFilter(ContextCompat.getColor(context, R.color.blue), android.graphics.PorterDuff.Mode.SRC_IN);
 
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override

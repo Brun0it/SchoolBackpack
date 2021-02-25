@@ -121,6 +121,7 @@ public class EdtFragment extends Fragment {
         currentDate.setOnClickListener(v -> {
             calendar = Calendar.getInstance();
             updateDate();
+            currentDate.setVisibility(View.GONE);
         });
 
         calendar = Calendar.getInstance();
