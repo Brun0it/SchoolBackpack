@@ -8,17 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.cours.schoolbackpack.R;
-import com.cours.schoolbackpack.controller.AddCoursDialog;
+import com.cours.schoolbackpack.controller.AddClassDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -149,7 +145,7 @@ public class ProfilFragment extends Fragment {
     }
 
     public void addCours() {
-        new AddCoursDialog().showDialog(requireActivity());
+        new AddClassDialog().showDialog(requireActivity());
     }
 
     public boolean isDarkMode() {

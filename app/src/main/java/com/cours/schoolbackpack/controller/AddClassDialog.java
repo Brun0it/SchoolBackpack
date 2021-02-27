@@ -2,7 +2,6 @@ package com.cours.schoolbackpack.controller;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.res.Configuration;
@@ -11,8 +10,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -20,14 +17,14 @@ import android.widget.TimePicker;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cours.schoolbackpack.R;
-import com.cours.schoolbackpack.model.Devoir;
+import com.cours.schoolbackpack.model.Class;
 import com.cours.schoolbackpack.model.Subject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AddCoursDialog {
+public class AddClassDialog {
 
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public static void showDialog(final Activity activity){
@@ -50,8 +47,8 @@ public class AddCoursDialog {
         }
 
         final Spinner sp1 = dialog.findViewById(R.id.matieres);
-        TextView heureDebut = dialog.findViewById(R.id.heureDebut);
-        TextView heureFin = dialog.findViewById(R.id.heureFin);
+        TextView startHour = dialog.findViewById(R.id.startHour);
+        TextView endHour = dialog.findViewById(R.id.endHour);
 
         Calendar calendar = Calendar.getInstance();
         String hour;
@@ -63,7 +60,7 @@ public class AddCoursDialog {
         int minute = calendar.get(Calendar.MINUTE);
         if (minute < 10) min = "0" + minute;
         else min = "" + minute;
-        heureDebut.setText(hour + "h" + min);
+        startHour.setText(hour + "h" + min);
 
         calendar.add(Calendar.HOUR_OF_DAY, 1);
         hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -72,16 +69,16 @@ public class AddCoursDialog {
         minute = calendar.get(Calendar.MINUTE);
         if (minute < 10) min = "0" + minute;
         else min = "" + minute;
-        heureFin.setText(hour + "h" + min);
+        endHour.setText(hour + "h" + min);
 
         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(activity,
                 android.R.layout.simple_list_item_1, list);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp1.setAdapter(adp1);
 
-        heureDebut.setOnClickListener(v -> {
-            int mHour = Integer.parseInt(heureDebut.getText().toString().charAt(0) + "" + heureDebut.getText().toString().charAt(1));
-            int mMin = Integer.parseInt(heureDebut.getText().toString().charAt(3) + "" + heureDebut.getText().toString().charAt(4));
+        startHour.setOnClickListener(v -> {
+            int mHour = Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1));
+            int mMin = Integer.parseInt(startHour.getText().toString().charAt(3) + "" + startHour.getText().toString().charAt(4));
             TimePickerDialog timePickerDialog = new TimePickerDialog(activity, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -92,21 +89,21 @@ public class AddCoursDialog {
                     if (minute < 10) min = "0" + minute;
                     else min = "" + minute;
 
-                    heureDebut.setText(hour + "h" + min);
-                    if (hourOfDay < Integer.parseInt(heureFin.getText().toString().charAt(0) + "" + heureFin.getText().toString().charAt(1)))
-                        heureFin.setTextColor(activity.getResources().getColor(R.color.blue));
-                    else if (Integer.parseInt(heureFin.getText().toString().charAt(0) + "" + heureFin.getText().toString().charAt(1)) == hourOfDay
-                            && minute < Integer.parseInt(heureFin.getText().toString().charAt(3) + "" + heureFin.getText().toString().charAt(4)) )
-                        heureFin.setTextColor(activity.getResources().getColor(R.color.blue));
-                    else heureFin.setTextColor(activity.getResources().getColor(R.color.pink));
+                    startHour.setText(hour + "h" + min);
+                    if (hourOfDay < Integer.parseInt(endHour.getText().toString().charAt(0) + "" + endHour.getText().toString().charAt(1)))
+                        endHour.setTextColor(activity.getResources().getColor(R.color.blue));
+                    else if (Integer.parseInt(endHour.getText().toString().charAt(0) + "" + endHour.getText().toString().charAt(1)) == hourOfDay
+                            && minute < Integer.parseInt(endHour.getText().toString().charAt(3) + "" + endHour.getText().toString().charAt(4)) )
+                        endHour.setTextColor(activity.getResources().getColor(R.color.blue));
+                    else endHour.setTextColor(activity.getResources().getColor(R.color.pink));
                 }
             }, mHour, mMin, true);
             timePickerDialog.show();
         });
 
-        heureFin.setOnClickListener(v -> {
-            int mHour = Integer.parseInt(heureFin.getText().toString().charAt(0) + "" + heureFin.getText().toString().charAt(1));
-            int mMin = Integer.parseInt(heureFin.getText().toString().charAt(3) + "" + heureFin.getText().toString().charAt(4));
+        endHour.setOnClickListener(v -> {
+            int mHour = Integer.parseInt(endHour.getText().toString().charAt(0) + "" + endHour.getText().toString().charAt(1));
+            int mMin = Integer.parseInt(endHour.getText().toString().charAt(3) + "" + endHour.getText().toString().charAt(4));
             TimePickerDialog timePickerDialog = new TimePickerDialog(activity, (view, hourOfDay1, minute1) -> {
                 String hour1;
                 if (hourOfDay1 < 10) hour1 = "0" + hourOfDay1;
@@ -115,21 +112,24 @@ public class AddCoursDialog {
                 if (minute1 < 10) min1 = "0" + minute1;
                 else min1 = "" + minute1;
 
-                heureFin.setText(hour1 + "h" + min1);
-                if (Integer.parseInt(heureDebut.getText().toString().charAt(0) + "" + heureDebut.getText().toString().charAt(1)) < hourOfDay1)
-                    heureFin.setTextColor(activity.getResources().getColor(R.color.blue));
-                else if (Integer.parseInt(heureDebut.getText().toString().charAt(0) + "" + heureDebut.getText().toString().charAt(1)) == hourOfDay1
-                        && Integer.parseInt(heureDebut.getText().toString().charAt(3) + "" + heureDebut.getText().toString().charAt(4)) < minute1)
-                    heureFin.setTextColor(activity.getResources().getColor(R.color.blue));
-                else heureFin.setTextColor(activity.getResources().getColor(R.color.pink));
+                endHour.setText(hour1 + "h" + min1);
+                if (Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1)) < hourOfDay1)
+                    endHour.setTextColor(activity.getResources().getColor(R.color.blue));
+                else if (Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1)) == hourOfDay1
+                        && Integer.parseInt(startHour.getText().toString().charAt(3) + "" + startHour.getText().toString().charAt(4)) < minute1)
+                    endHour.setTextColor(activity.getResources().getColor(R.color.blue));
+                else endHour.setTextColor(activity.getResources().getColor(R.color.pink));
             }, mHour, mMin, true);
             timePickerDialog.show();
         });
 
         ConstraintLayout background = dialog.findViewById(R.id.background);
         Button close = dialog.findViewById(R.id.close);
+        Button add = dialog.findViewById(R.id.add);
 
         if ((activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) background.setBackground(activity.getDrawable(R.drawable.background_dark));
+
+        add.setOnClickListener(v -> new ModifyClassDialog().showDialog(activity, new Class(new Subject("Musique", "Mme Upshal"), "A99", Calendar.getInstance(), 90)));
 
         close.setOnClickListener(v -> dialog.dismiss());
 

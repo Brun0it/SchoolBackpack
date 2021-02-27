@@ -160,6 +160,7 @@ public class DevoirsFragment extends Fragment {
 
         generateDays();
         updateDate();
+        currentDate.setVisibility(View.GONE);
         return root;
     }
 

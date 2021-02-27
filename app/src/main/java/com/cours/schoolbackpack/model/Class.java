@@ -26,10 +26,18 @@ public class Class {
 
 
     public String getTime() {
-        String hour = time.getTime().getHours() + "";
-        String min = time.getTime().getMinutes() + "";
+        String hour = time.get(Calendar.HOUR_OF_DAY) + "";
+        String min = time.get(Calendar.MINUTE) + "";
         if (time.getTime().getMinutes() == 0) min = "";
         if (min.length() == 1) min = 0 + "" + min;
+        return hour + "h" + min;
+    }
+
+    public String getFullTime() {
+        String hour = time.get(Calendar.HOUR_OF_DAY) + "";
+        String min = time.get(Calendar.MINUTE) + "";
+        if (hour.length() == 1) hour = "0" + hour;
+        if (min.length() == 1) min = "0" + min;
         return hour + "h" + min;
     }
 
@@ -42,6 +50,18 @@ public class Class {
         String min = finalTime.getTime().getMinutes() + "";
         if (finalTime.getTime().getMinutes() == 0) min = "";
         if (min.length() == 1) min = 0 + "" + min;
+        return hour + "h" + min;
+    }
+
+    public String getFullFinalTime() {
+        Calendar finalTime = Calendar.getInstance();
+        finalTime.set(Calendar.HOUR_OF_DAY, time.getTime().getHours());
+        finalTime.set(Calendar.MINUTE, time.getTime().getMinutes());
+        finalTime.add(Calendar.MINUTE, duration);
+        String hour = finalTime.get(Calendar.HOUR_OF_DAY) + "";
+        String min = finalTime.get(Calendar.MINUTE) + "";
+        if (hour.length() == 1) hour = "0" + hour;
+        if (min.length() == 1) min = "0" + min;
         return hour + "h" + min;
     }
 

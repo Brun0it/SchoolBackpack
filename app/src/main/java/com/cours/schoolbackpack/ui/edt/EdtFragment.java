@@ -144,6 +144,7 @@ public class EdtFragment extends Fragment {
 
         generateDays();
         updateDate();
+        currentDate.setVisibility(View.GONE);
         return root;
     }
 
