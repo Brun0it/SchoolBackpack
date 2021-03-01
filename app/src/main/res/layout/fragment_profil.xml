@@ -284,7 +284,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Matières"
-                        android:textColor="@color/semi_dark_grey"
+                        android:textColor="@color/white"
                         android:textSize="22sp" />
 
                     <TextView
@@ -292,7 +292,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins"
                         android:text="Visualiser, ajouter, modifier ou supprimer des matières de votre liste."
-                        android:textColor="@color/semi_dark_grey"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -311,7 +311,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Emploi du temps"
-                        android:textColor="@color/semi_dark_grey"
+                        android:textColor="@color/white"
                         android:textSize="22sp" />
 
                     <TextView
@@ -320,7 +320,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins"
                         android:text="Visualiser l'emploi du temps, ajouter ou supprimer des matières à celui-ci."
-                        android:textColor="@color/semi_dark_grey"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
