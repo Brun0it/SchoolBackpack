@@ -12,12 +12,19 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.controller.AddClassDialog;
+import com.cours.schoolbackpack.controller.ClassAdapter;
+import com.cours.schoolbackpack.model.Class;
+import com.cours.schoolbackpack.model.DataBaseManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ProfilFragment extends Fragment {
 
@@ -26,6 +33,7 @@ public class ProfilFragment extends Fragment {
     private LinearLayout edt;
     private FloatingActionButton addCours;
     private ImageView backEdt;
+    RecyclerView recyclerView;
     private Calendar calendar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,6 +46,7 @@ public class ProfilFragment extends Fragment {
         header = root.findViewById(R.id.header);
         headerEdt = root.findViewById(R.id.headerEdt);
         edt = root.findViewById(R.id.edt);
+        recyclerView = root.findViewById(R.id.recyclerView);
         edt.setOnClickListener(v -> displayPage(edtPage));
         addCours = root.findViewById(R.id.addCours);
         addCours.setOnClickListener(v -> addCours());
@@ -79,6 +88,22 @@ public class ProfilFragment extends Fragment {
         return root;
     }
 
+    public void displayList(int day) {
+        DataBaseManager db = new DataBaseManager(requireContext());
+        displayList(db.getClasses(day));
+        db.close();
+    }
+
+    public void displayList(List<Class> classes) {
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        ClassAdapter classAdapter = new ClassAdapter(classes, null, calendar, getActivity(), getContext(), this, isDarkMode());
+        recyclerView.setAdapter(classAdapter);
+
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     public void updateHeader() {
         if (isDarkMode()) {
@@ -112,6 +137,8 @@ public class ProfilFragment extends Fragment {
                 mondayLayout.setBackground(requireActivity().getDrawable(R.drawable.background_pink_day));
                 break;
         }
+
+        displayList(calendar.get(Calendar.DAY_OF_WEEK));
     }
 
     public void setTheme() {
@@ -137,6 +164,11 @@ public class ProfilFragment extends Fragment {
     public void displayPage(ConstraintLayout page) {
         hideAllPages();
         page.setVisibility(View.VISIBLE);
+        if (page == edtPage) {
+            DataBaseManager db = new DataBaseManager(requireContext());
+            displayList(db.getClasses(calendar.get(Calendar.DAY_OF_WEEK)));
+            db.close();
+        }
     }
 
     public void hideAllPages() {
@@ -145,7 +177,7 @@ public class ProfilFragment extends Fragment {
     }
 
     public void addCours() {
-        new AddClassDialog().showDialog(requireActivity());
+        new AddClassDialog().showDialog(this, calendar.get(Calendar.DAY_OF_WEEK));
     }
 
     public boolean isDarkMode() {

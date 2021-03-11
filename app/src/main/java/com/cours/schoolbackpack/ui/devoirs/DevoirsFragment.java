@@ -192,21 +192,27 @@ public class DevoirsFragment extends Fragment {
         Subject sport = new Subject("Sport", "M. Hamon");
         Subject histoireGeo = new Subject("Histoire Géo", "M. Venant");
 
-        monday.add(new Class(maths, "Amphi 2", time1, 30));
-        monday.add(new Class(anglais, "TD4", time2, 150));
-        monday.add(new Class(francais, "TD4", time3, 180));
+        Calendar time0 = Calendar.getInstance();
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        monday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), maths, "Amphi 2", time1, 30));
+        monday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), anglais, "TD4", time2, 150));
+        monday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), francais, "TD4", time3, 180));
 
-        tuesday.add(new Class(allemand, "TD4", time3, 180));
-        tuesday.add(new Class(sport, "TD4", time4, 90));
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        tuesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),allemand, "TD4", time3, 180));
+        tuesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),sport, "TD4", time4, 90));
 
-        wednesday.add(new Class(histoireGeo, "TD4", time1, 180));
-        wednesday.add(new Class(francais, "TD4", time3, 180));
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        wednesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), histoireGeo, "TD4", time1, 180));
+        wednesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),francais, "TD4", time3, 180));
 
-        thursday.add(new Class(maths, "TP3", time3, 180));
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        thursday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),maths, "TP3", time3, 180));
 
-        friday.add(new Class(allemand, "TD4", time5, 90));
-        friday.add(new Class(maths, "TD4", time2, 180));
-        friday.add(new Class(anglais, "TD4", time6, 90));
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        friday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),allemand, "TD4", time5, 90));
+        friday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),maths, "TD4", time2, 180));
+        friday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),anglais, "TD4", time6, 90));
 
         Devoir eval1 = new Devoir(allemand, time2, "eval1", true);
         Devoir exo1 = new Devoir(maths, Calendar.getInstance(), "exo1", false);

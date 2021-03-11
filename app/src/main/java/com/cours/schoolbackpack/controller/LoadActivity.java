@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.controller.MainActivity;
+import com.cours.schoolbackpack.model.DataBaseManager;
+import com.cours.schoolbackpack.model.Subject;
 
 public class LoadActivity extends AppCompatActivity {
 
@@ -37,6 +39,16 @@ public class LoadActivity extends AppCompatActivity {
                 finish();
             }
         }, 1500);
+        DataBaseManager db = new DataBaseManager(this);
+        if (db.getSubjects().size() < 1) {
+            db.addSubject(new Subject("Maths", "M. Walkowiak"));
+            db.addSubject(new Subject("Anglais", "M. Roulin"));
+            db.addSubject(new Subject("Français", "Mme Vieillard"));
+            db.addSubject(new Subject("Allemand", "Mme Piau"));
+            db.addSubject(new Subject("Sport", "M. Hamon"));
+            db.addSubject(new Subject("Histoire Géo", "M. Venant"));
+        }
+        db.close();
     }
 
     @Override

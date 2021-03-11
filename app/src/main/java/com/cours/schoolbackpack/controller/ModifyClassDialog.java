@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,30 +20,29 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.model.Class;
+import com.cours.schoolbackpack.model.DataBaseManager;
 import com.cours.schoolbackpack.model.Subject;
+import com.cours.schoolbackpack.ui.profil.ProfilFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ModifyClassDialog {
 
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
-    public static void showDialog(final Activity activity, Class aClass){
+    public static void showDialog(ProfilFragment fragment, Class aClass){
+        final Activity activity = fragment.requireActivity();
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_modify_cours);
 
-        List<Subject> subjects = new ArrayList<>();
-        subjects.add(new Subject(aClass.getSubject().getName(), aClass.getSubject().getTeacher()));
-        subjects.add(new Subject("Maths", "M. Walkowiak"));
-        subjects.add(new Subject("Anglais", "M. Roulin"));
-        subjects.add(new Subject("Français", "Mme Vieillard"));
-        subjects.add(new Subject("Allemand", "Mme Piau"));
-        subjects.add(new Subject("Sport", "M. Hamon"));
-        subjects.add(new Subject("Histoire Géo", "M. Venant"));
+        DataBaseManager db = new DataBaseManager(activity);
+        List<Subject> subjects = db.getSubjects();
+        db.close();
 
-        final List<String> list = new ArrayList<String>();
+        final List<String> list = new ArrayList<>();
         for (int i = 0; i < subjects.size(); i++) {
             list.add(subjects.get(i).getName());
         }
@@ -61,6 +61,14 @@ public class ModifyClassDialog {
                 android.R.layout.simple_list_item_1, list);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp1.setAdapter(adp1);
+        int id = -1;
+        for (int i = 0; i < subjects.size(); i++) {
+            if (subjects.get(i).getId() == aClass.getSubject().getId()) {
+                id = i;
+                break;
+            }
+        }
+        sp1.setSelection(id);
 
         startHour.setOnClickListener(v -> {
             int mHour = Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1));
@@ -110,9 +118,48 @@ public class ModifyClassDialog {
         });
 
         ConstraintLayout background = dialog.findViewById(R.id.background);
-        Button close = dialog.findViewById(R.id.close);
+        Button modify = dialog.findViewById(R.id.modify), delete = dialog.findViewById(R.id.delete),
+                close = dialog.findViewById(R.id.close);
 
         if ((activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) background.setBackground(activity.getDrawable(R.drawable.background_dark));
+
+        modify.setOnClickListener(v -> {
+            Calendar startCalendar = Calendar.getInstance(), endCalendar = Calendar.getInstance(), localCalendar = Calendar.getInstance();
+            startCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1)));
+            startCalendar.set(Calendar.MINUTE, Integer.parseInt(startHour.getText().toString().charAt(3) + "" + startHour.getText().toString().charAt(4)));
+            Log.e("ModifyClassDialog", startCalendar.get(Calendar.HOUR_OF_DAY) + "h" + startCalendar.get(Calendar.MINUTE));
+            endCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endHour.getText().toString().charAt(0) + "" + endHour.getText().toString().charAt(1)));
+            endCalendar.set(Calendar.MINUTE, Integer.parseInt(endHour.getText().toString().charAt(3) + "" + endHour.getText().toString().charAt(4)));
+            Log.e("ModifyClassDialog", endCalendar.get(Calendar.HOUR_OF_DAY) + "h" + endCalendar.get(Calendar.MINUTE));
+            localCalendar.set(Calendar.HOUR_OF_DAY, endCalendar.get(Calendar.HOUR_OF_DAY) - startCalendar.get(Calendar.HOUR_OF_DAY));
+            localCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) - startCalendar.get(Calendar.MINUTE));
+            Log.e("ModifyClassDialog", localCalendar.get(Calendar.HOUR_OF_DAY) + "h" + localCalendar.get(Calendar.MINUTE));
+            int duration = localCalendar.get(Calendar.HOUR)*60 + localCalendar.get(Calendar.MINUTE);
+            aClass.setClassroom(classroom.getText().toString());
+            aClass.setTime(startCalendar);
+            aClass.setDuration(duration);
+            aClass.setSubject(subjects.get((int) sp1.getSelectedItemId()));
+            Log.e("ModifyClassDialog", aClass.getDuration() + "");
+
+            DataBaseManager db1 = new DataBaseManager(activity);
+            db1.updateClass(aClass);
+            db1.close();
+            db1 = new DataBaseManager(activity);
+            fragment.displayList(db.getClasses(aClass.getIdJour()));
+            db1.close();
+            dialog.dismiss();
+        });
+
+        delete.setOnClickListener(v -> {
+            DataBaseManager db1 = new DataBaseManager(activity);
+            int dayId = aClass.getIdJour();
+            db1.deleteClass(aClass.getId());
+            db1.close();
+            db1 = new DataBaseManager(activity);
+            fragment.displayList(db.getClasses(dayId));
+            db1.close();
+            dialog.dismiss();
+        });
 
         close.setOnClickListener(v -> dialog.dismiss());
 

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.model.Class;
 import com.cours.schoolbackpack.model.Devoir;
+import com.cours.schoolbackpack.ui.profil.ProfilFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -122,25 +123,36 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
         if (darkMode) holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_dark));
         else holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_light));
 
-        List<Devoir> devoirs2 = new ArrayList<>();
-        for (int i = 0; i < devoirs.size(); i++) {
-            if (devoirs.get(i).getSubject() == aClass.getSubject() && devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)
-                    && devoirs.get(i).getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)) devoirs2.add(devoirs.get(i));
+        if (devoirs != null) {
+            List<Devoir> devoirs2 = new ArrayList<>();
+            for (int i = 0; i < devoirs.size(); i++) {
+                if (devoirs.get(i).getSubject() == aClass.getSubject() && devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)
+                        && devoirs.get(i).getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR))
+                    devoirs2.add(devoirs.get(i));
+            }
+
+            int nbEvals = 0, nbExos = 0;
+            for (int i = 0; i < devoirs2.size(); i++) {
+                if (devoirs2.get(i).isEvaluation()) ++nbEvals;
+                else ++nbExos;
+            }
+
+
+            if (nbEvals == 0) holder.evaluationLayout.setVisibility(View.GONE);
+            else {
+                if (nbEvals > 1) holder.evaluationText.setText(nbEvals + " évaluations");
+                else holder.evaluationText.setText(nbEvals + " évaluation");
+                holder.evaluationLayout.setVisibility(View.VISIBLE);
+            }
+
+            if (nbExos == 0) holder.exerciceLayout.setVisibility(View.GONE);
+            else {
+                if (nbExos > 1) holder.exerciceText.setText(nbExos + " exercices");
+                else holder.exerciceText.setText(nbExos + " exercice");
+                holder.exerciceLayout.setVisibility(View.VISIBLE);
+            }
+
         }
-
-        int nbEvals = 0, nbExos = 0;
-        for (int i = 0; i < devoirs2.size(); i++) {
-            if (devoirs2.get(i).isEvaluation()) ++nbEvals;
-            else ++nbExos;
-        }
-
-        if (nbEvals == 0) holder.evaluationLayout.setVisibility(View.GONE);
-        else if (nbEvals > 1) holder.evaluationText.setText(nbEvals + " évaluations");
-        else holder.evaluationText.setText(nbEvals + " évaluation");
-
-        if (nbExos == 0) holder.exerciceLayout.setVisibility(View.GONE);
-        else if (nbExos > 1) holder.exerciceText.setText(nbExos + " exercices");
-        else holder.exerciceText.setText(nbExos + " exercice");
 
         switch (activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
             case Configuration.UI_MODE_NIGHT_YES:
@@ -148,6 +160,12 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
                 break;
             default:
                 break;
+        }
+
+        if (fragment.getClass() == ProfilFragment.class) {
+            holder.background.setOnClickListener(v -> {
+                new ModifyClassDialog().showDialog((ProfilFragment) fragment, aClass);
+            });
         }
     }
 

@@ -110,7 +110,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/add"
+            android:id="@+id/modify"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -141,7 +141,7 @@
             app:cornerRadius="13dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add" />
+            app:layout_constraintTop_toBottomOf="@+id/modify" />
 
         <Button
             android:id="@+id/close"

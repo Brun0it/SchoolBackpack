@@ -246,28 +246,34 @@ public class EdtFragment extends Fragment {
         Subject musique = new Subject("Musique", "Mme Petit");
         Subject sport = new Subject("Sport", "M. Hamon");
 
-        monday.add(new Class(francais, "A21", time1, 60));
-        monday.add(new Class(techno, "B12", time2, 60));
-        monday.add(new Class(anglais, "C15", time4, 60));
-        monday.add(new Class(maths, "E24", time5, 120));
+        Calendar time0 = Calendar.getInstance();
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        monday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),francais, "A21", time1, 60));
+        monday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),techno, "B12", time2, 60));
+        monday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),anglais, "C15", time4, 60));
+        monday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),maths, "E24", time5, 120));
 
-        tuesday.add(new Class(histoireGeo, "B13", time1, 60));
-        tuesday.add(new Class(anglais, "A12", time2, 60));
-        tuesday.add(new Class(lv2, "A01", time3, 60));
-        tuesday.add(new Class(artplastique, "B07", time5, 120));
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        tuesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), histoireGeo, "B13", time1, 60));
+        tuesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), anglais, "A12", time2, 60));
+        tuesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), lv2, "A01", time3, 60));
+        tuesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), artplastique, "B07", time5, 120));
 
-        wednesday.add(new Class(francais, "A21", time1, 60));
-        wednesday.add(new Class(histoireGeo, "B13", time2, 60));
-        wednesday.add(new Class(lv2, "D12", time4, 60));
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        wednesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), francais, "A21", time1, 60));
+        wednesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), histoireGeo, "B13", time2, 60));
+        wednesday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), lv2, "D12", time4, 60));
 
-        thursday.add(new Class(maths, "C13", time1, 60));
-        thursday.add(new Class(techno, "B13", time3, 60));
-        thursday.add(new Class(francais, "D12", time4, 60));
-        thursday.add(new Class(musique, "B07", time6, 60));
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        thursday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), maths, "C13", time1, 60));
+        thursday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), techno, "B13", time3, 60));
+        thursday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), francais, "D12", time4, 60));
+        thursday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), musique, "B07", time6, 60));
 
-        friday.add(new Class(anglais, "E15", time2, 60));
-        friday.add(new Class(sport, "Gymnase", time3, 120));
-        friday.add(new Class(maths, "B13", time5, 60));
+        time0.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        friday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), anglais, "E15", time2, 60));
+        friday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), sport, "Gymnase", time3, 120));
+        friday.add(new Class(time0.get(Calendar.DAY_OF_WEEK), maths, "B13", time5, 60));
 
         Devoir eval1 = new Devoir(lv2, Calendar.getInstance(), "eval1", true);
         Devoir exo1 = new Devoir(maths, Calendar.getInstance(), "exo1", false);

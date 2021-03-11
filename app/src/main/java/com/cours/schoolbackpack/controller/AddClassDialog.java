@@ -4,21 +4,28 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.model.Class;
+import com.cours.schoolbackpack.model.DataBaseManager;
 import com.cours.schoolbackpack.model.Subject;
+import com.cours.schoolbackpack.ui.profil.ProfilFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,19 +34,16 @@ import java.util.List;
 public class AddClassDialog {
 
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
-    public static void showDialog(final Activity activity){
+    public static void showDialog(final ProfilFragment fragment, int idJour){
+        final Activity activity = fragment.requireActivity();
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_add_cours);
 
-        List<Subject> subjects = new ArrayList<>();
-        subjects.add(new Subject("Maths", "M. Walkowiak"));
-        subjects.add(new Subject("Anglais", "M. Roulin"));
-        subjects.add(new Subject("Français", "Mme Vieillard"));
-        subjects.add(new Subject("Allemand", "Mme Piau"));
-        subjects.add(new Subject("Sport", "M. Hamon"));
-        subjects.add(new Subject("Histoire Géo", "M. Venant"));
+        DataBaseManager db = new DataBaseManager(activity);
+        List<Subject> subjects = db.getSubjects();
+        db.close();
 
         final List<String> list = new ArrayList<String>();
         for (int i = 0; i < subjects.size(); i++) {
@@ -49,24 +53,27 @@ public class AddClassDialog {
         final Spinner sp1 = dialog.findViewById(R.id.matieres);
         TextView startHour = dialog.findViewById(R.id.startHour);
         TextView endHour = dialog.findViewById(R.id.endHour);
+        EditText classroom = dialog.findViewById(R.id.classroom);
 
-        Calendar calendar = Calendar.getInstance();
+        Calendar startCalendar = Calendar.getInstance();
+        Calendar endCalendar = Calendar.getInstance();
+
         String hour;
         String min;
 
-        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int hourOfDay = startCalendar.get(Calendar.HOUR_OF_DAY);
         if (hourOfDay < 10) hour = "0" + hourOfDay;
         else hour = "" + hourOfDay;
-        int minute = calendar.get(Calendar.MINUTE);
+        int minute = startCalendar.get(Calendar.MINUTE);
         if (minute < 10) min = "0" + minute;
         else min = "" + minute;
         startHour.setText(hour + "h" + min);
 
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
-        hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        endCalendar.add(Calendar.HOUR_OF_DAY, 1);
+        hourOfDay = endCalendar.get(Calendar.HOUR_OF_DAY);
         if (hourOfDay < 10) hour = "0" + hourOfDay;
         else hour = "" + hourOfDay;
-        minute = calendar.get(Calendar.MINUTE);
+        minute = endCalendar.get(Calendar.MINUTE);
         if (minute < 10) min = "0" + minute;
         else min = "" + minute;
         endHour.setText(hour + "h" + min);
@@ -129,7 +136,27 @@ public class AddClassDialog {
 
         if ((activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) background.setBackground(activity.getDrawable(R.drawable.background_dark));
 
-        add.setOnClickListener(v -> new ModifyClassDialog().showDialog(activity, new Class(new Subject("Musique", "Mme Upshal"), "A99", Calendar.getInstance(), 90)));
+        add.setOnClickListener(v -> {
+            if (startCalendar.before(endCalendar)) {
+                DataBaseManager db1 = new DataBaseManager(activity);
+                startCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1)));
+                startCalendar.set(Calendar.MINUTE, Integer.parseInt(startHour.getText().toString().charAt(3) + "" + startHour.getText().toString().charAt(4)));
+                endCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endHour.getText().toString().charAt(0) + "" + endHour.getText().toString().charAt(1)));
+                endCalendar.set(Calendar.MINUTE, Integer.parseInt(endHour.getText().toString().charAt(3) + "" + endHour.getText().toString().charAt(4)));
+                Calendar localCalendar = Calendar.getInstance();
+                localCalendar.set(Calendar.HOUR_OF_DAY, endCalendar.get(Calendar.HOUR_OF_DAY) - startCalendar.get(Calendar.HOUR_OF_DAY));
+                localCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) - startCalendar.get(Calendar.MINUTE));
+                int duration = localCalendar.get(Calendar.HOUR)*60 + localCalendar.get(Calendar.MINUTE);
+                Class aClass = new Class(idJour, subjects.get((int) sp1.getSelectedItemId()), classroom.getText().toString(), startCalendar, duration);
+                Log.e("AddClassDialog", aClass.toString());
+                db1.addClass(aClass);
+                db1.close();
+                fragment.displayList(idJour);
+                dialog.dismiss();
+            } else {
+                Toast.makeText(activity, "Heure de fin incorrecte", Toast.LENGTH_LONG).show();
+            }
+        });
 
         close.setOnClickListener(v -> dialog.dismiss());
 

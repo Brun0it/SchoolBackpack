@@ -2,12 +2,23 @@ package com.cours.schoolbackpack.model;
 
 public class Subject {
 
+    private int id;
     private String name;
     private String teacher;
+
+    public Subject(int id, String name, String teacher) {
+        this.id = id;
+        this.name = name;
+        this.teacher = teacher;
+    }
 
     public Subject(String name, String teacher) {
         this.name = name;
         this.teacher = teacher;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -17,4 +28,5 @@ public class Subject {
     public String getTeacher() {
         return teacher;
     }
+
 }
