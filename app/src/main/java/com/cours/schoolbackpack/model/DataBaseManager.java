@@ -126,11 +126,13 @@ public class DataBaseManager extends SQLiteOpenHelper {
 
     public List<Class> getShortedClasses(int idJour) {
         List<Class> classes = getClasses(idJour);
-        for (int j = 0; j < classes.size()-1; j++) {
-            if (classes.get(j).getTime().after(classes.get(j+1).getTime())) {
-                Class tmpClass = classes.get(j);
-                classes.set(j, classes.get(j+1));
-                classes.set(j+1, tmpClass);
+        for (int i = 0; i < classes.size()-1; i++) {
+            for (int j = 0; j < classes.size()-1; j++) {
+                if (classes.get(j).getTime().after(classes.get(j+1).getTime())) {
+                    Class tmpClass = classes.get(j);
+                    classes.set(j, classes.get(j+1));
+                    classes.set(j+1, tmpClass);
+                }
             }
         }
         return classes;

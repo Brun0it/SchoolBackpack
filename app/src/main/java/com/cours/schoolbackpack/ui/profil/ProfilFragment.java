@@ -167,7 +167,7 @@ public class ProfilFragment extends Fragment {
         page.setVisibility(View.VISIBLE);
         if (page == edtPage) {
             DataBaseManager db = new DataBaseManager(requireContext());
-            displayList(db.getClasses(calendar.get(Calendar.DAY_OF_WEEK)));
+            displayList(calendar.get(Calendar.DAY_OF_WEEK));
             db.close();
         }
     }

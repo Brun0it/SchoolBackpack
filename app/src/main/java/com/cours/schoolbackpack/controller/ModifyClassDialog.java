@@ -143,9 +143,7 @@ public class ModifyClassDialog {
                 DataBaseManager db1 = new DataBaseManager(activity);
                 db1.updateClass(aClass);
                 db1.close();
-                db1 = new DataBaseManager(activity);
-                fragment.displayList(db.getClasses(aClass.getIdJour()));
-                db1.close();
+                fragment.displayList(aClass.getIdJour());
                 dialog.dismiss();
             } else {
                 Toast.makeText(activity, "Heure de fin incorrecte", Toast.LENGTH_LONG).show();

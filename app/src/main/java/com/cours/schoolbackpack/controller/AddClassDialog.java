@@ -150,9 +150,6 @@ public class AddClassDialog {
                 Class aClass = new Class(idJour, subjects.get((int) sp1.getSelectedItemId()), classroom.getText().toString(), startCalendar, duration);
                 db1.addClass(aClass);
                 db1.close();
-                /*db1 = new DataBaseManager(activity);
-                db1.shortClasses();
-                db1.close();*/
                 fragment.displayList(idJour);
                 dialog.dismiss();
             } else {
