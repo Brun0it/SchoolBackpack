@@ -95,6 +95,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
         holder.teacher.setText(aClass.getClassroom() + " | " + aClass.getSubject().getTeacher());
         holder.time.setText(aClass.getTimeStringFormat() + " - " + aClass.getFinalTime());
 
+        if (position == 0) holder.space.setVisibility(View.VISIBLE);
+        else holder.space.setVisibility(View.GONE);
+
         int h = ((int) Math.floor(aClass.getDuration()/60));
         String hour;
         if (h < 1) hour = "";
