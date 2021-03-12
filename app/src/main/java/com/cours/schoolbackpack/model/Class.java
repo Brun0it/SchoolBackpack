@@ -38,8 +38,11 @@ public class Class {
         return classroom;
     }
 
+    public Calendar getTime() {
+        return time;
+    }
 
-    public String getTime() {
+    public String getTimeStringFormat() {
         String hour = time.get(Calendar.HOUR_OF_DAY) + "";
         String min = time.get(Calendar.MINUTE) + "";
         if (time.getTime().getMinutes() == 0) min = "";

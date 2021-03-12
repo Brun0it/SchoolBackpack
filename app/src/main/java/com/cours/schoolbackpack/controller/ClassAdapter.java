@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +93,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
         Class aClass = classes.get(position);
         holder.name.setText(aClass.getSubject().getName());
         holder.teacher.setText(aClass.getClassroom() + " | " + aClass.getSubject().getTeacher());
-        holder.time.setText(aClass.getTime() + " - " + aClass.getFinalTime());
+        holder.time.setText(aClass.getTimeStringFormat() + " - " + aClass.getFinalTime());
 
         int h = ((int) Math.floor(aClass.getDuration()/60));
         String hour;
@@ -126,7 +125,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
         if (devoirs != null) {
             List<Devoir> devoirs2 = new ArrayList<>();
             for (int i = 0; i < devoirs.size(); i++) {
-                if (devoirs.get(i).getSubject() == aClass.getSubject() && devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)
+                if (devoirs.get(i).getSubject().getId() == aClass.getSubject().getId() && devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)
                         && devoirs.get(i).getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR))
                     devoirs2.add(devoirs.get(i));
             }

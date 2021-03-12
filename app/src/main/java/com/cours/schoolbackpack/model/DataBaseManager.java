@@ -84,7 +84,6 @@ public class DataBaseManager extends SQLiteOpenHelper {
         int minute = cursor.getInt(3) % 60;
         calendar.set(Calendar.HOUR_OF_DAY, hours);
         calendar.set(Calendar.MINUTE, minute);
-        Log.e("DataBaseManager", cursor.getInt(5) + "");
         Class aClass = new Class(cursor.getInt(0), cursor.getInt(1), getSubject(cursor.getInt(5)), cursor.getString(2), calendar, cursor.getInt(4));
         cursor.close();
         return aClass;
@@ -103,6 +102,40 @@ public class DataBaseManager extends SQLiteOpenHelper {
         return classes;
     }
 
+    public List<List<Class>> getShortedClasses() {
+        List<List<Class>> classes = new ArrayList<>();
+        classes.add(getClasses(Calendar.MONDAY));
+        classes.add(getClasses(Calendar.TUESDAY));
+        classes.add(getClasses(Calendar.WEDNESDAY));
+        classes.add(getClasses(Calendar.THURSDAY));
+        classes.add(getClasses(Calendar.FRIDAY));
+
+        for (int i = 0; i < classes.size(); i++) {
+            List<Class> selectedClasses = classes.get(i);
+            for (int j = 0; j < selectedClasses.size()-1; j++) {
+                if (selectedClasses.get(j).getTime().after(selectedClasses.get(j+1).getTime())) {
+                    Class tmpClass = selectedClasses.get(j);
+                    selectedClasses.set(j, selectedClasses.get(j+1));
+                    selectedClasses.set(j+1, tmpClass);
+                }
+            }
+            Log.e("DBManager", i + "");
+        }
+        return classes;
+    }
+
+    public List<Class> getShortedClasses(int idJour) {
+        List<Class> classes = getClasses(idJour);
+        for (int j = 0; j < classes.size()-1; j++) {
+            if (classes.get(j).getTime().after(classes.get(j+1).getTime())) {
+                Class tmpClass = classes.get(j);
+                classes.set(j, classes.get(j+1));
+                classes.set(j+1, tmpClass);
+            }
+        }
+        return classes;
+    }
+
     public void updateClass(Class aClass) {
         String query = "UPDATE COURS SET salleCours = '"+ aClass.getClassroom().replace("'","''") +"' WHERE idCours = "+ aClass.getId() +";";
         getWritableDatabase().execSQL(query);
@@ -114,8 +147,13 @@ public class DataBaseManager extends SQLiteOpenHelper {
         getWritableDatabase().execSQL(query);
     }
 
-    public  void deleteClass(int id) {
+    public void deleteClass(int id) {
         String query = "DELETE FROM COURS WHERE idCours = "+ id +";";
+        getWritableDatabase().execSQL(query);
+    }
+
+    public void deleteAllClass() {
+        String query = "DELETE FROM COURS";
         getWritableDatabase().execSQL(query);
     }
 

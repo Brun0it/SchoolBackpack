@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -127,27 +128,28 @@ public class ModifyClassDialog {
             Calendar startCalendar = Calendar.getInstance(), endCalendar = Calendar.getInstance(), localCalendar = Calendar.getInstance();
             startCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1)));
             startCalendar.set(Calendar.MINUTE, Integer.parseInt(startHour.getText().toString().charAt(3) + "" + startHour.getText().toString().charAt(4)));
-            Log.e("ModifyClassDialog", startCalendar.get(Calendar.HOUR_OF_DAY) + "h" + startCalendar.get(Calendar.MINUTE));
             endCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endHour.getText().toString().charAt(0) + "" + endHour.getText().toString().charAt(1)));
             endCalendar.set(Calendar.MINUTE, Integer.parseInt(endHour.getText().toString().charAt(3) + "" + endHour.getText().toString().charAt(4)));
-            Log.e("ModifyClassDialog", endCalendar.get(Calendar.HOUR_OF_DAY) + "h" + endCalendar.get(Calendar.MINUTE));
             localCalendar.set(Calendar.HOUR_OF_DAY, endCalendar.get(Calendar.HOUR_OF_DAY) - startCalendar.get(Calendar.HOUR_OF_DAY));
             localCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) - startCalendar.get(Calendar.MINUTE));
-            Log.e("ModifyClassDialog", localCalendar.get(Calendar.HOUR_OF_DAY) + "h" + localCalendar.get(Calendar.MINUTE));
-            int duration = localCalendar.get(Calendar.HOUR)*60 + localCalendar.get(Calendar.MINUTE);
-            aClass.setClassroom(classroom.getText().toString());
-            aClass.setTime(startCalendar);
-            aClass.setDuration(duration);
-            aClass.setSubject(subjects.get((int) sp1.getSelectedItemId()));
-            Log.e("ModifyClassDialog", aClass.getDuration() + "");
+            if (startCalendar.before(endCalendar)) {
+                int duration = localCalendar.get(Calendar.HOUR)*60 + localCalendar.get(Calendar.MINUTE);
+                aClass.setClassroom(classroom.getText().toString());
+                aClass.setTime(startCalendar);
+                aClass.setDuration(duration);
+                aClass.setSubject(subjects.get((int) sp1.getSelectedItemId()));
+                Log.e("ModifyClassDialog", aClass.getDuration() + "");
 
-            DataBaseManager db1 = new DataBaseManager(activity);
-            db1.updateClass(aClass);
-            db1.close();
-            db1 = new DataBaseManager(activity);
-            fragment.displayList(db.getClasses(aClass.getIdJour()));
-            db1.close();
-            dialog.dismiss();
+                DataBaseManager db1 = new DataBaseManager(activity);
+                db1.updateClass(aClass);
+                db1.close();
+                db1 = new DataBaseManager(activity);
+                fragment.displayList(db.getClasses(aClass.getIdJour()));
+                db1.close();
+                dialog.dismiss();
+            } else {
+                Toast.makeText(activity, "Heure de fin incorrecte", Toast.LENGTH_LONG).show();
+            }
         });
 
         delete.setOnClickListener(v -> {

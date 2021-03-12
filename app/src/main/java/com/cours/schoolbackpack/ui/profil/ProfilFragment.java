@@ -80,6 +80,7 @@ public class ProfilFragment extends Fragment {
         });
 
         calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
         setTheme();
         displayPage(mainPage);
@@ -90,7 +91,7 @@ public class ProfilFragment extends Fragment {
 
     public void displayList(int day) {
         DataBaseManager db = new DataBaseManager(requireContext());
-        displayList(db.getClasses(day));
+        displayList(db.getShortedClasses(day));
         db.close();
     }
 

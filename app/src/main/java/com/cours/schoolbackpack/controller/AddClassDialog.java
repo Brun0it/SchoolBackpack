@@ -137,20 +137,22 @@ public class AddClassDialog {
         if ((activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) background.setBackground(activity.getDrawable(R.drawable.background_dark));
 
         add.setOnClickListener(v -> {
+            startCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1)));
+            startCalendar.set(Calendar.MINUTE, Integer.parseInt(startHour.getText().toString().charAt(3) + "" + startHour.getText().toString().charAt(4)));
+            endCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endHour.getText().toString().charAt(0) + "" + endHour.getText().toString().charAt(1)));
+            endCalendar.set(Calendar.MINUTE, Integer.parseInt(endHour.getText().toString().charAt(3) + "" + endHour.getText().toString().charAt(4)));
+            Calendar localCalendar = Calendar.getInstance();
+            localCalendar.set(Calendar.HOUR_OF_DAY, endCalendar.get(Calendar.HOUR_OF_DAY) - startCalendar.get(Calendar.HOUR_OF_DAY));
+            localCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) - startCalendar.get(Calendar.MINUTE));
             if (startCalendar.before(endCalendar)) {
                 DataBaseManager db1 = new DataBaseManager(activity);
-                startCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startHour.getText().toString().charAt(0) + "" + startHour.getText().toString().charAt(1)));
-                startCalendar.set(Calendar.MINUTE, Integer.parseInt(startHour.getText().toString().charAt(3) + "" + startHour.getText().toString().charAt(4)));
-                endCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endHour.getText().toString().charAt(0) + "" + endHour.getText().toString().charAt(1)));
-                endCalendar.set(Calendar.MINUTE, Integer.parseInt(endHour.getText().toString().charAt(3) + "" + endHour.getText().toString().charAt(4)));
-                Calendar localCalendar = Calendar.getInstance();
-                localCalendar.set(Calendar.HOUR_OF_DAY, endCalendar.get(Calendar.HOUR_OF_DAY) - startCalendar.get(Calendar.HOUR_OF_DAY));
-                localCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) - startCalendar.get(Calendar.MINUTE));
                 int duration = localCalendar.get(Calendar.HOUR)*60 + localCalendar.get(Calendar.MINUTE);
                 Class aClass = new Class(idJour, subjects.get((int) sp1.getSelectedItemId()), classroom.getText().toString(), startCalendar, duration);
-                Log.e("AddClassDialog", aClass.toString());
                 db1.addClass(aClass);
                 db1.close();
+                /*db1 = new DataBaseManager(activity);
+                db1.shortClasses();
+                db1.close();*/
                 fragment.displayList(idJour);
                 dialog.dismiss();
             } else {
