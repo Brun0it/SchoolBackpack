@@ -92,7 +92,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
     public void onBindViewHolder(ClassAdapterViewHolder holder, int position) {
         Class aClass = classes.get(position);
         holder.name.setText(aClass.getSubject().getName());
-        holder.teacher.setText(aClass.getClassroom() + " | " + aClass.getSubject().getTeacher());
+        if (aClass.getClassroom().equals("")) holder.teacher.setText(aClass.getSubject().getTeacher());
+        else holder.teacher.setText(aClass.getClassroom() + " | " + aClass.getSubject().getTeacher());
         holder.time.setText(aClass.getTimeStringFormat() + " - " + aClass.getFinalTime());
 
         if (position == 0) holder.space.setVisibility(View.VISIBLE);
@@ -154,6 +155,11 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassAdapter
                 holder.exerciceLayout.setVisibility(View.VISIBLE);
             }
 
+        }
+
+        if (fragment.getClass() == ProfilFragment.class) {
+            holder.evaluationLayout.setVisibility(View.GONE);
+            holder.exerciceLayout.setVisibility(View.GONE);
         }
 
         switch (activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
