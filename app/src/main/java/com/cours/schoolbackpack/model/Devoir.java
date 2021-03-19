@@ -1,6 +1,7 @@
 package com.cours.schoolbackpack.model;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Devoir {
 
@@ -14,6 +15,14 @@ public class Devoir {
         this.subject = subject;
         this.date = date;
         this.notes = notes;
+        this.evaluation = evaluation;
+    }
+
+    public Devoir(Subject subject, Calendar date, String notes, int fait, Boolean evaluation) {
+        this.subject = subject;
+        this.date = date;
+        this.notes = notes;
+        this.fait = (fait == 1);
         this.evaluation = evaluation;
     }
 
@@ -39,5 +48,10 @@ public class Devoir {
 
     public Boolean getFait() {
         return fait;
+    }
+
+    public int getFaitSQL() {
+        if (fait) return 1;
+        return 0;
     }
 }

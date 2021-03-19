@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.cours.schoolbackpack.controller.ClassAdapter;
 import com.cours.schoolbackpack.controller.DevoirAdapter;
 import com.cours.schoolbackpack.controller.NewDevoirDialog;
 import com.cours.schoolbackpack.model.Class;
+import com.cours.schoolbackpack.model.DataBaseManager;
 import com.cours.schoolbackpack.model.Day;
 import com.cours.schoolbackpack.model.Devoir;
 import com.cours.schoolbackpack.model.Subject;
@@ -255,7 +257,10 @@ public class DevoirsFragment extends Fragment {
     }
 
     public List<Devoir> getDevoirs(Calendar calendar){
-        List<Devoir> devoirs = new ArrayList<>();
+        Log.e("lodkz", "hefsdnsfe");
+        DataBaseManager db = new DataBaseManager(requireActivity());
+        List<Devoir> devoirs = db.getDevoirs();
+        db.close();
         for(int i=0; i<this.devoirs.size(); i++){
             if(this.devoirs.get(i).getDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && this.devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR)) devoirs.add(this.devoirs.get(i));
         }

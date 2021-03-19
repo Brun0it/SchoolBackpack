@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cours.schoolbackpack.R;
+import com.cours.schoolbackpack.model.DataBaseManager;
 import com.cours.schoolbackpack.model.Devoir;
 import com.cours.schoolbackpack.model.Subject;
 
@@ -37,15 +38,11 @@ public class CreationDevoirDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_creation_devoir);
 
-        //DEBUT PHASE DE TEST
+        DataBaseManager db = new DataBaseManager(activity);
+        List<Subject> subjects = db.getSubjects();
+        db.close();
 
-        List<Subject> subjects = new ArrayList<>();
-        subjects.add(new Subject("Maths", "M. Walkowiak"));
-        subjects.add(new Subject("Anglais", "M. Roulin"));
-        subjects.add(new Subject("Français", "Mme Vieillard"));
-        subjects.add(new Subject("Allemand", "Mme Piau"));
-        subjects.add(new Subject("Sport", "M. Hamon"));
-        subjects.add(new Subject("Histoire Géo", "M. Venant"));
+        //DEBUT PHASE DE TEST
 
         final List<String> list = new ArrayList<String>();
         for (int i = 0; i < subjects.size(); i++) {
@@ -97,7 +94,10 @@ public class CreationDevoirDialog {
         });
 
         add.setOnClickListener(v -> {
+            DataBaseManager db1 = new DataBaseManager(activity);
             Devoir devoir = new Devoir(subjects.get((int) sp1.getSelectedItemId()), selectedDate,textPlain.getText().toString(), evaluation);
+            db1.addDevoir(devoir);
+            db1.close();
             dialog.dismiss();
         });
 

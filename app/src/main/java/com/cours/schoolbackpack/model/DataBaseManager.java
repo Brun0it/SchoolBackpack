@@ -48,9 +48,12 @@ public class DataBaseManager extends SQLiteOpenHelper {
 
         query = "CREATE TABLE DEVOIR ("
                 + "idDevoir INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "dateDevoir DATE NOT NULL,"
+                + "jourDevoir INTEGER NOT NULL,"
+                + "moisDevoir INTEGER NOT NULL,"
+                + "anneeDevoir INTEGER NOT NULL,"
                 + "travailDevoir VARCHAR(500) NOT NULL,"
-                + "idCours INTEGER REFERENCES COURS(idCours));";
+                + "statutDevoir INTEGER NOT NULL,"
+                + "idMatiere INTEGER REFERENCES MATIERE(idMatiere));";
         db.execSQL(query);
 
         query = "CREATE TABLE EVALUATION ("
@@ -187,5 +190,43 @@ public class DataBaseManager extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return subjects;
+    }
+
+    public void addDevoir(Devoir devoir) {
+        if (devoir != null) {
+            String query = "INSERT INTO DEVOIR (jourDevoir, moisDevoir, anneeDevoir, travailDevoir, statutDevoir ,idMatiere) " +
+                    "VALUES (" + devoir.getDate().get(Calendar.DAY_OF_MONTH) + ", "
+                    + devoir.getDate().get(Calendar.MONTH) + ", "
+                    + devoir.getDate().get(Calendar.YEAR) + ", '" + devoir.getNotes() + "',"
+                    + devoir.getFaitSQL() + ","
+                    + devoir.getSubject().getId() +");";
+            getWritableDatabase().execSQL(query);
+        }
+    }
+
+    public Devoir getDevoir(int id) {
+        String query = "SELECT * FROM DEVOIR WHERE idDevoir = "+ id +";";
+        Cursor cursor = this.getReadableDatabase().rawQuery(query, null);
+        cursor.moveToFirst();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, cursor.getInt(3));
+        calendar.set(Calendar.MONTH, cursor.getInt(2));
+        calendar.set(Calendar.DAY_OF_MONTH, cursor.getInt(1));
+        Devoir devoir = new Devoir(getSubject(cursor.getInt(6)), calendar, cursor.getString(4), cursor.getInt(5), false);
+        cursor.close();
+        return devoir;
+    }
+
+    public List<Devoir> getDevoirs() {
+        List<Devoir> devoirs = new ArrayList<>();
+        String query = "SELECT * FROM DEVOIR;";
+        Cursor cursor = getWritableDatabase().rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int id = cursor.getInt(0);
+            devoirs.add(getDevoir(id));
+            cursor.moveToNext();
+        }
+        return devoirs;
     }
 }
