@@ -36,6 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -233,7 +234,8 @@ public class DevoirsFragment extends Fragment {
     public void displayList(List<Devoir> devoirs) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
+        DataBaseManager db = new DataBaseManager(requireActivity());
+        devoirs = db.getDevoirs(calendar);
         List<Devoir> evaluations = new ArrayList<>();
         List<Devoir> exNFait = new ArrayList<>();
         List<Devoir> exFait = new ArrayList<>();
@@ -262,7 +264,7 @@ public class DevoirsFragment extends Fragment {
         List<Devoir> devoirs = db.getDevoirs();
         db.close();
         for(int i=0; i<this.devoirs.size(); i++){
-            if(this.devoirs.get(i).getDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && this.devoirs.get(i).getDate().get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR)) devoirs.add(this.devoirs.get(i));
+            if(this.devoirs.get(i).getDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && this.devoirs.get(i).getDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) && this.devoirs.get(i).getDate().get(Calendar.MONTH) == calendar.get(Calendar.MONTH)) devoirs.add(this.devoirs.get(i));
         }
         return devoirs;
     }

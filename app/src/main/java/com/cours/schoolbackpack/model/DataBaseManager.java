@@ -197,7 +197,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
             String query = "INSERT INTO DEVOIR (jourDevoir, moisDevoir, anneeDevoir, travailDevoir, statutDevoir ,idMatiere) " +
                     "VALUES (" + devoir.getDate().get(Calendar.DAY_OF_MONTH) + ", "
                     + devoir.getDate().get(Calendar.MONTH) + ", "
-                    + devoir.getDate().get(Calendar.YEAR) + ", '" + devoir.getNotes() + "',"
+                    + devoir.getDate().get(Calendar.YEAR) + ", '" + devoir.getNotes().replace("'","''") + "',"
                     + devoir.getFaitSQL() + ","
                     + devoir.getSubject().getId() +");";
             getWritableDatabase().execSQL(query);
@@ -212,7 +212,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
         calendar.set(Calendar.YEAR, cursor.getInt(3));
         calendar.set(Calendar.MONTH, cursor.getInt(2));
         calendar.set(Calendar.DAY_OF_MONTH, cursor.getInt(1));
-        Devoir devoir = new Devoir(getSubject(cursor.getInt(6)), calendar, cursor.getString(4), cursor.getInt(5), false);
+        Devoir devoir = new Devoir(cursor.getInt(0), getSubject(cursor.getInt(6)), calendar, cursor.getString(4), cursor.getInt(5), false);
         cursor.close();
         return devoir;
     }
@@ -220,6 +220,19 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public List<Devoir> getDevoirs() {
         List<Devoir> devoirs = new ArrayList<>();
         String query = "SELECT * FROM DEVOIR;";
+        Cursor cursor = getWritableDatabase().rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int id = cursor.getInt(0);
+            devoirs.add(getDevoir(id));
+            cursor.moveToNext();
+        }
+        return devoirs;
+    }
+
+    public List<Devoir> getDevoirs(Calendar date) {
+        List<Devoir> devoirs = new ArrayList<>();
+        String query = "SELECT * FROM DEVOIR WHERE jourDevoir = " + date.get(Calendar.DAY_OF_MONTH) + " AND moisDevoir = " + date.get(Calendar.MONTH) + " AND anneeDevoir = " + date.get(Calendar.YEAR) + ";";
         Cursor cursor = getWritableDatabase().rawQuery(query, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

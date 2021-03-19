@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class Devoir {
 
+    private int id;
     private Subject subject;
     private Calendar date;
     private String notes;
@@ -18,12 +19,13 @@ public class Devoir {
         this.evaluation = evaluation;
     }
 
-    public Devoir(Subject subject, Calendar date, String notes, int fait, Boolean evaluation) {
+    public Devoir(int id, Subject subject, Calendar date, String notes, int fait, Boolean evaluation) {
         this.subject = subject;
         this.date = date;
         this.notes = notes;
         this.fait = (fait == 1);
         this.evaluation = evaluation;
+        this.id = id;
     }
 
     public Subject getSubject() {
