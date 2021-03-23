@@ -53,7 +53,6 @@ public class DevoirsFragment extends Fragment {
     private final Day wednesday= new Day();
     private final Day thursday= new Day();
     private final Day friday= new Day();
-    private List<Devoir> devoirs = new ArrayList<>();
     private Calendar calendar = Calendar.getInstance();
     private int weekNmb;
     private ImageView currentDate;
@@ -154,14 +153,14 @@ public class DevoirsFragment extends Fragment {
         });
 
         newDevoir = root.findViewById(R.id.newDevoir);
-        newDevoir.setOnClickListener(v -> new NewDevoirDialog().showDialog(getActivity()));
+        newDevoir.setOnClickListener(v -> new NewDevoirDialog().showDialog(this));
 
         if (isDarkMode()) {
             previousWeek.setColorFilter(Color.argb(255, 255, 255, 255));
             nextWeek.setColorFilter(Color.argb(255, 255, 255, 255));
         }
 
-        generateDays();
+        //generateDays();
         updateDate();
         currentDate.setVisibility(View.GONE);
         return root;
@@ -224,18 +223,17 @@ public class DevoirsFragment extends Fragment {
         Devoir exo4 = new Devoir(sport, time2, "exo4", false);
 
         exo4.setFait(true);
-        devoirs.add(eval1);
+        /*devoirs.add(eval1);
         devoirs.add(exo1);
         devoirs.add(exo2);
         devoirs.add(exo3);
-        devoirs.add(exo4);
+        devoirs.add(exo4);*/
     }
 
     public void displayList(List<Devoir> devoirs) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         DataBaseManager db = new DataBaseManager(requireActivity());
-        devoirs = db.getDevoirs(calendar);
         List<Devoir> evaluations = new ArrayList<>();
         List<Devoir> exNFait = new ArrayList<>();
         List<Devoir> exFait = new ArrayList<>();
@@ -250,7 +248,7 @@ public class DevoirsFragment extends Fragment {
         shortedDevoirs.add(exNFait);
         shortedDevoirs.add(exFait);
 
-        CategoryDevoirAdapter categoryDevoirAdapter = new CategoryDevoirAdapter(shortedDevoirs, getActivity(), getContext(), this, isDarkMode());
+        CategoryDevoirAdapter categoryDevoirAdapter = new CategoryDevoirAdapter(shortedDevoirs, this, isDarkMode());
         recyclerView.setAdapter(categoryDevoirAdapter);
     }
 
@@ -259,14 +257,14 @@ public class DevoirsFragment extends Fragment {
     }
 
     public List<Devoir> getDevoirs(Calendar calendar){
-        Log.e("lodkz", "hefsdnsfe");
         DataBaseManager db = new DataBaseManager(requireActivity());
         List<Devoir> devoirs = db.getDevoirs();
         db.close();
-        for(int i=0; i<this.devoirs.size(); i++){
-            if(this.devoirs.get(i).getDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && this.devoirs.get(i).getDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) && this.devoirs.get(i).getDate().get(Calendar.MONTH) == calendar.get(Calendar.MONTH)) devoirs.add(this.devoirs.get(i));
+        List<Devoir> devoirsF = new ArrayList<>();
+        for(int i=0; i<devoirs.size(); i++){
+            if(devoirs.get(i).getDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && devoirs.get(i).getDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) && devoirs.get(i).getDate().get(Calendar.MONTH) == calendar.get(Calendar.MONTH)) devoirsF.add(devoirs.get(i));
         }
-        return devoirs;
+        return devoirsF;
     }
 
     public void updateDate(int year, int month, int dayOfMonth) {
@@ -419,6 +417,8 @@ public class DevoirsFragment extends Fragment {
     }
 
     public void badgeGesture(Calendar calendar, ImageView red, ImageView blue){
+        red.setVisibility(View.GONE);
+        blue.setVisibility(View.GONE);
         for(int i=0; i<getDevoirs(calendar).size() && (red.getVisibility() == View.GONE || blue.getVisibility() == View.GONE); i++){
             if (getDevoirs(calendar).get(i).isEvaluation()) red.setVisibility(View.VISIBLE);
             else blue.setVisibility(View.VISIBLE);

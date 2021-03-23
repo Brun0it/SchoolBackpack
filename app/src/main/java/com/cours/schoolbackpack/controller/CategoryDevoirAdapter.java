@@ -42,10 +42,10 @@ public class CategoryDevoirAdapter extends RecyclerView.Adapter<CategoryDevoirAd
         }
     }
 
-    public CategoryDevoirAdapter(List<List<Devoir>> devoirs, Activity activity, Context context, Fragment fragment, Boolean darkMode) {
+    public CategoryDevoirAdapter(List<List<Devoir>> devoirs, Fragment fragment, Boolean darkMode) {
         this.devoirs = devoirs;
-        this.activity = activity;
-        this.context = context;
+        this.activity = fragment.requireActivity();
+        this.context = fragment.requireContext();
         this.fragment = fragment;
         this.darkMode = darkMode;
     }

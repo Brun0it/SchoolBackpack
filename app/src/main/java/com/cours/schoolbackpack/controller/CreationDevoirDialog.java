@@ -19,11 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.model.DataBaseManager;
 import com.cours.schoolbackpack.model.Devoir;
 import com.cours.schoolbackpack.model.Subject;
+import com.cours.schoolbackpack.ui.devoirs.DevoirsFragment;
+import com.cours.schoolbackpack.ui.edt.EdtFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +35,8 @@ import java.util.List;
 public class CreationDevoirDialog {
 
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
-    public static void showDialog(final Activity activity, Boolean evaluation){
+    public static void showDialog(Fragment fragment, Boolean evaluation){
+        Activity activity = fragment.requireActivity();
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -59,6 +63,8 @@ public class CreationDevoirDialog {
         //FIN
 
         Calendar selectedDate = Calendar.getInstance();
+        if (fragment.getClass() == DevoirsFragment.class) selectedDate = ((DevoirsFragment) fragment).getCalendar();
+        else selectedDate = ((EdtFragment) fragment).getCalendar();
 
         ConstraintLayout background = dialog.findViewById(R.id.background);
         Button add = dialog.findViewById(R.id.add);
@@ -82,23 +88,24 @@ public class CreationDevoirDialog {
             nextSubject.setColorFilter(activity.getResources().getColor(R.color.blue), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
+        Calendar finalSelectedDate = selectedDate;
         selectDate.setOnClickListener(v -> {
-            Calendar calendar = Calendar.getInstance();
             DatePickerDialog datePickerDialog = new DatePickerDialog(activity, (view, year, month, dayOfMonth) -> {
-                selectedDate.set(Calendar.YEAR, year);
-                selectedDate.set(Calendar.MONTH, month);
-                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                dateText.setText(selectedDate.get(Calendar.DAY_OF_MONTH) + "/" + (selectedDate.get(Calendar.MONTH)+1) + "/" + selectedDate.get(Calendar.YEAR));
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                finalSelectedDate.set(Calendar.YEAR, year);
+                finalSelectedDate.set(Calendar.MONTH, month);
+                finalSelectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dateText.setText(finalSelectedDate.get(Calendar.DAY_OF_MONTH) + "/" + (finalSelectedDate.get(Calendar.MONTH)+1) + "/" + finalSelectedDate.get(Calendar.YEAR));
+            }, finalSelectedDate.get(Calendar.YEAR), finalSelectedDate.get(Calendar.MONTH), finalSelectedDate.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
 
         add.setOnClickListener(v -> {
             DataBaseManager db1 = new DataBaseManager(activity);
-            Devoir devoir = new Devoir(subjects.get((int) sp1.getSelectedItemId()), selectedDate,textPlain.getText().toString(), evaluation);
+            Devoir devoir = new Devoir(subjects.get((int) sp1.getSelectedItemId()), finalSelectedDate,textPlain.getText().toString(), evaluation);
             db1.addDevoir(devoir);
             db1.close();
             dialog.dismiss();
+            if (fragment.getClass() == DevoirsFragment.class) ((DevoirsFragment) fragment).updateDate();
         });
 
         close.setOnClickListener(v -> dialog.dismiss());

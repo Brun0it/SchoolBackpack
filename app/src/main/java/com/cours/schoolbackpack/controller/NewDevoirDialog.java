@@ -9,12 +9,15 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.cours.schoolbackpack.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class NewDevoirDialog {
 
-    public static void showDialog(final Activity activity){
+    public static void showDialog(Fragment fragment){
+        Activity activity = fragment.requireActivity();
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -27,12 +30,12 @@ public class NewDevoirDialog {
         Spinner matieres = dialog.findViewById(R.id.matieres);
 
         addEvaluation.setOnClickListener(v -> {
-            new CreationDevoirDialog().showDialog(activity, true);
+            new CreationDevoirDialog().showDialog(fragment, true);
             dialog.dismiss();
         });
 
         addExercice.setOnClickListener(v -> {
-            new CreationDevoirDialog().showDialog(activity, false);
+            new CreationDevoirDialog().showDialog(fragment, false);
             dialog.dismiss();
         });
 

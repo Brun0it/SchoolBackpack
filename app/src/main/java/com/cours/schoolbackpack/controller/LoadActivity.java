@@ -40,6 +40,60 @@ public class LoadActivity extends AppCompatActivity {
             }
         }, 1500);
         DataBaseManager db = new DataBaseManager(this);
+
+        //Remise à zéro de la BDD
+        /*db.getWritableDatabase().execSQL("DROP TABLE MATIERE");
+        db.getWritableDatabase().execSQL("DROP TABLE SEMAINE");
+        db.getWritableDatabase().execSQL("DROP TABLE JOUR");
+        db.getWritableDatabase().execSQL("DROP TABLE COURS");
+        db.getWritableDatabase().execSQL("DROP TABLE DEVOIR");
+        db.getWritableDatabase().execSQL("DROP TABLE EVALUATION");
+        db.close();
+
+        db = new DataBaseManager(this);
+        String query = "CREATE TABLE MATIERE ("
+                + "idMatiere INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "nomMatiere VARCHAR(50) NOT NULL,"
+                + "profMatiere VARCHAR(50) NOT NULL);";
+        db.getWritableDatabase().execSQL(query);
+
+        query = "CREATE TABLE SEMAINE ("
+                + "idSemaine INTEGER PRIMARY KEY AUTOINCREMENT);";
+        db.getWritableDatabase().execSQL(query);
+
+        query = "CREATE TABLE JOUR ("
+                + "idJours INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "idSemaine INTEGER REFERENCES SEMAINE(idSemaine));";
+        db.getWritableDatabase().execSQL(query);
+
+        query = "CREATE TABLE COURS ("
+                + "idCours INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "idJour INTEGER REFERENCES JOURS(idJours),"
+                + "salleCours VARCHAR(50) NOT NULL,"
+                + "debutCours INTEGER NOT NULL,"
+                + "dureeCours INTEGER NOT NULL,"
+                + "idMatiere INTEGER REFERENCES MATIERE(idMatiere));";
+        db.getWritableDatabase().execSQL(query);
+
+        query = "CREATE TABLE DEVOIR ("
+                + "idDevoir INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "jourDevoir INTEGER NOT NULL,"
+                + "moisDevoir INTEGER NOT NULL,"
+                + "anneeDevoir INTEGER NOT NULL,"
+                + "travailDevoir VARCHAR(500) NOT NULL,"
+                + "statutDevoir INTEGER NOT NULL,"
+                + "idMatiere INTEGER REFERENCES MATIERE(idMatiere));";
+        db.getWritableDatabase().execSQL(query);
+
+        query = "CREATE TABLE EVALUATION ("
+                + "idEvaluation INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "idCours INTEGER REFERENCES COURS(idCours),"
+                + "dateEvaluation DATE NOT NULL,"
+                + "travailEvaluation VARCHAR(500) NOT NULL);";
+        db.getWritableDatabase().execSQL(query);
+        db.close();
+
+        db = new DataBaseManager(this);*/
         if (db.getSubjects().size() < 1) {
             db.addSubject(new Subject("Maths", "M. Walkowiak"));
             db.addSubject(new Subject("Anglais", "M. Roulin"));

@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.controller.AddClassDialog;
 import com.cours.schoolbackpack.controller.ClassAdapter;
+import com.cours.schoolbackpack.controller.MatiereAdapter;
 import com.cours.schoolbackpack.model.Class;
 import com.cours.schoolbackpack.model.DataBaseManager;
+import com.cours.schoolbackpack.model.Subject;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -29,11 +31,11 @@ import java.util.List;
 public class ProfilFragment extends Fragment {
 
     //private ProfilViewModel profilViewModel;
-    private ConstraintLayout mainPage, edtPage, header, headerEdt, mondayLayout, tuesdayLayout, wednesdayLayout, thursdayLayout, fridayLayout;
-    private LinearLayout edt;
+    private ConstraintLayout mainPage, edtPage, matPage, header, headerEdt, headerMat, mondayLayout, tuesdayLayout, wednesdayLayout, thursdayLayout, fridayLayout;
+    private LinearLayout edt, mat;
     private FloatingActionButton addCours;
-    private ImageView backEdt;
-    RecyclerView recyclerView;
+    private ImageView backEdt, backMat;
+    RecyclerView recyclerView, recyclerViewMat;
     private Calendar calendar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,15 +45,22 @@ public class ProfilFragment extends Fragment {
 
         mainPage = root.findViewById(R.id.mainPage);
         edtPage = root.findViewById(R.id.edtPage);
+        matPage = root.findViewById(R.id.matieresPage);
         header = root.findViewById(R.id.header);
         headerEdt = root.findViewById(R.id.headerEdt);
+        headerMat = root.findViewById(R.id.headerMat);
         edt = root.findViewById(R.id.edt);
+        mat = root.findViewById(R.id.matieres);
         recyclerView = root.findViewById(R.id.recyclerView);
+        recyclerViewMat = root.findViewById(R.id.recyclerViewMatieres);
         edt.setOnClickListener(v -> displayPage(edtPage));
+        mat.setOnClickListener(v -> displayPage(matPage));
         addCours = root.findViewById(R.id.addCours);
         addCours.setOnClickListener(v -> addCours());
         backEdt = root.findViewById(R.id.backEdt);
+        backMat = root.findViewById(R.id.backMat);
         backEdt.setOnClickListener(v -> displayPage(mainPage));
+        backMat.setOnClickListener(v -> displayPage(mainPage));
 
         mondayLayout = root.findViewById(R.id.mondayLayout);
         mondayLayout.setOnClickListener(v -> {
@@ -93,6 +102,18 @@ public class ProfilFragment extends Fragment {
         DataBaseManager db = new DataBaseManager(requireContext());
         displayList(db.getShortedClasses(day));
         db.close();
+    }
+
+    public void displayMat() {
+        DataBaseManager db = new DataBaseManager(requireActivity());
+        List<Subject> matieres = db.getSubjects();
+        db.close();
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerViewMat.setLayoutManager(layoutManager);
+
+        MatiereAdapter matiereAdapter = new MatiereAdapter(matieres, this, isDarkMode());
+        recyclerViewMat.setAdapter(matiereAdapter);
     }
 
     public void displayList(List<Class> classes) {
@@ -146,6 +167,7 @@ public class ProfilFragment extends Fragment {
         if (isDarkMode()) {
             header.setBackground(requireActivity().getDrawable(R.drawable.header_dark));
             headerEdt.setBackground(requireActivity().getDrawable(R.drawable.header_dark));
+            headerMat.setBackground(requireActivity().getDrawable(R.drawable.header_dark));
             mondayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_dark));
             tuesdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_dark));
             wednesdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_dark));
@@ -154,6 +176,7 @@ public class ProfilFragment extends Fragment {
         } else {
             header.setBackground(requireActivity().getDrawable(R.drawable.header_light));
             headerEdt.setBackground(requireActivity().getDrawable(R.drawable.header_light));
+            headerMat.setBackground(requireActivity().getDrawable(R.drawable.header_light));
             mondayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_light));
             tuesdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_light));
             wednesdayLayout.setBackground(requireActivity().getDrawable(R.drawable.day_background_light));
@@ -169,12 +192,15 @@ public class ProfilFragment extends Fragment {
             DataBaseManager db = new DataBaseManager(requireContext());
             displayList(calendar.get(Calendar.DAY_OF_WEEK));
             db.close();
+        } else if (page == matPage) {
+            displayMat();
         }
     }
 
     public void hideAllPages() {
         mainPage.setVisibility(View.GONE);
         edtPage.setVisibility(View.GONE);
+        matPage.setVisibility(View.GONE);
     }
 
     public void addCours() {

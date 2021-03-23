@@ -30,7 +30,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
 
         query = "CREATE TABLE SEMAINE ("
                 + "idSemaine INTEGER PRIMARY KEY AUTOINCREMENT);";
-                db.execSQL(query);
+        db.execSQL(query);
 
         query = "CREATE TABLE JOUR ("
                 + "idJours INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -66,7 +66,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        
     }
 
     public void addClass(Class cours) {
@@ -194,7 +194,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
 
     public void addDevoir(Devoir devoir) {
         if (devoir != null) {
-            String query = "INSERT INTO DEVOIR (jourDevoir, moisDevoir, anneeDevoir, travailDevoir, statutDevoir ,idMatiere) " +
+            String query = "INSERT INTO DEVOIR ('jourDevoir', 'moisDevoir', 'anneeDevoir', 'travailDevoir', 'statutDevoir' ,'idMatiere') " +
                     "VALUES (" + devoir.getDate().get(Calendar.DAY_OF_MONTH) + ", "
                     + devoir.getDate().get(Calendar.MONTH) + ", "
                     + devoir.getDate().get(Calendar.YEAR) + ", '" + devoir.getNotes().replace("'","''") + "',"
@@ -232,7 +232,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
 
     public List<Devoir> getDevoirs(Calendar date) {
         List<Devoir> devoirs = new ArrayList<>();
-        String query = "SELECT * FROM DEVOIR WHERE jourDevoir = " + date.get(Calendar.DAY_OF_MONTH) + " AND moisDevoir = " + date.get(Calendar.MONTH) + " AND anneeDevoir = " + date.get(Calendar.YEAR) + ";";
+        String query = "SELECT * FROM DEVOIR WHERE 'jourDevoir' = " + date.get(Calendar.DAY_OF_MONTH) + " AND 'moisDevoir' = " + date.get(Calendar.MONTH) + " AND 'anneeDevoir' = " + date.get(Calendar.YEAR) + ";";
         Cursor cursor = getWritableDatabase().rawQuery(query, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

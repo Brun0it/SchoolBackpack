@@ -50,6 +50,10 @@ public class EdtFragment extends Fragment {
     private final List<Devoir> devoirs = new ArrayList<>();
     private FloatingActionButton newDevoir;
 
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         edtViewModel =
@@ -130,7 +134,7 @@ public class EdtFragment extends Fragment {
         });
 
         newDevoir = root.findViewById(R.id.newDevoir);
-        newDevoir.setOnClickListener(v -> new NewDevoirDialog().showDialog(getActivity()));
+        newDevoir.setOnClickListener(v -> new NewDevoirDialog().showDialog(this));
 
         if (isDarkMode()) {
             previousWeek.setColorFilter(Color.argb(255, 255, 255, 255));
