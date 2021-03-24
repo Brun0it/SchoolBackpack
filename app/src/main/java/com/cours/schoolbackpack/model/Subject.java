@@ -29,4 +29,11 @@ public class Subject {
         return teacher;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
 }

@@ -170,6 +170,13 @@ public class DataBaseManager extends SQLiteOpenHelper {
         }
     }
 
+    public void updateSubject(Subject subject) {
+        String query = "UPDATE MATIERE SET nomMatiere = '"+ subject.getName().replace("'","''") +"' WHERE idMatiere = "+ subject.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE MATIERE SET profMatiere = '"+ subject.getTeacher().replace("'","''") +"' WHERE idMatiere = "+ subject.getId() +";";
+        getWritableDatabase().execSQL(query);
+    }
+
     public Subject getSubject(int id) {
         String query = "SELECT * FROM MATIERE WHERE idMatiere = "+ id +";";
         Cursor cursor = getReadableDatabase().rawQuery(query, null);
@@ -190,6 +197,15 @@ public class DataBaseManager extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return subjects;
+    }
+
+    public void deleteSubject(int id) {
+        String query = "DELETE FROM DEVOIR WHERE idMatiere = "+ id +";";
+        getWritableDatabase().execSQL(query);
+        query = "DELETE FROM COURS WHERE idMatiere = "+ id +";";
+        getWritableDatabase().execSQL(query);
+        query = "DELETE FROM MATIERE WHERE idMatiere = "+ id +";";
+        getWritableDatabase().execSQL(query);
     }
 
     public void addDevoir(Devoir devoir) {

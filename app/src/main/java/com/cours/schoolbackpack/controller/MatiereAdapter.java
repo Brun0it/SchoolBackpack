@@ -34,7 +34,7 @@ public class MatiereAdapter extends RecyclerView.Adapter<MatiereAdapter.MatiereA
     List<Subject> matieres;
     Activity activity;
     Context context;
-    Fragment fragment;
+    ProfilFragment fragment;
     Boolean darkMode;
 
     public static class MatiereAdapterViewHolder extends RecyclerView.ViewHolder{
@@ -42,6 +42,7 @@ public class MatiereAdapter extends RecyclerView.Adapter<MatiereAdapter.MatiereA
         TextView prof;
         ConstraintLayout background;
         ImageButton button;
+        Space space;
 
         public MatiereAdapterViewHolder(View itemView) {
             super(itemView);
@@ -49,10 +50,11 @@ public class MatiereAdapter extends RecyclerView.Adapter<MatiereAdapter.MatiereA
             prof = itemView.findViewById(R.id.prof);
             background = itemView.findViewById(R.id.background);
             button  = itemView.findViewById(R.id.button);
+            space = itemView.findViewById(R.id.space);
         }
     }
 
-    public MatiereAdapter(List<Subject> matieres, Fragment fragment, Boolean darkMode) {
+    public MatiereAdapter(List<Subject> matieres, ProfilFragment fragment, Boolean darkMode) {
         this.matieres = matieres;
         this.activity = fragment.requireActivity();
         this.context = fragment.requireContext();
@@ -71,8 +73,17 @@ public class MatiereAdapter extends RecyclerView.Adapter<MatiereAdapter.MatiereA
     @Override
     public void onBindViewHolder(MatiereAdapterViewHolder holder, int position) {
         Subject matiere = matieres.get(position);
+        if (position == 0) holder.space.setVisibility(View.VISIBLE); else holder.space.setVisibility(View.GONE);
+        if (darkMode) holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_dark_devoirs));
+        else holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_light_devoirs));
         holder.name.setText(matiere.getName());
         holder.prof.setText(matiere.getTeacher());
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ModifySubjectDialog.showDialog(fragment, matiere);
+            }
+        });
     }
 
     @Override

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cours.schoolbackpack.R;
 import com.cours.schoolbackpack.controller.AddClassDialog;
 import com.cours.schoolbackpack.controller.ClassAdapter;
+import com.cours.schoolbackpack.controller.CreateSubjectDialog;
 import com.cours.schoolbackpack.controller.MatiereAdapter;
 import com.cours.schoolbackpack.model.Class;
 import com.cours.schoolbackpack.model.DataBaseManager;
@@ -33,7 +34,7 @@ public class ProfilFragment extends Fragment {
     //private ProfilViewModel profilViewModel;
     private ConstraintLayout mainPage, edtPage, matPage, header, headerEdt, headerMat, mondayLayout, tuesdayLayout, wednesdayLayout, thursdayLayout, fridayLayout;
     private LinearLayout edt, mat;
-    private FloatingActionButton addCours;
+    private FloatingActionButton addCours, addMatiere;
     private ImageView backEdt, backMat;
     RecyclerView recyclerView, recyclerViewMat;
     private Calendar calendar;
@@ -57,6 +58,8 @@ public class ProfilFragment extends Fragment {
         mat.setOnClickListener(v -> displayPage(matPage));
         addCours = root.findViewById(R.id.addCours);
         addCours.setOnClickListener(v -> addCours());
+        addMatiere = root.findViewById(R.id.addMatiere);
+        addMatiere.setOnClickListener(v -> addMatiere());
         backEdt = root.findViewById(R.id.backEdt);
         backMat = root.findViewById(R.id.backMat);
         backEdt.setOnClickListener(v -> displayPage(mainPage));
@@ -205,6 +208,10 @@ public class ProfilFragment extends Fragment {
 
     public void addCours() {
         new AddClassDialog().showDialog(this, calendar.get(Calendar.DAY_OF_WEEK));
+    }
+
+    public void addMatiere() {
+        new CreateSubjectDialog().showDialog(this);
     }
 
     public boolean isDarkMode() {
