@@ -48,8 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/header_light"
-            android:paddingTop="10dp"
-            android:paddingBottom="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -61,16 +61,14 @@
                 android:layout_marginStart="16dp"
                 android:rotation="180"
                 android:src="@drawable/ic_baseline_navigate_next_24"
-                app:layout_constraintBottom_toBottomOf="@+id/weekTextViewMat"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/weekTextViewMat"
                 app:tint="@color/pink" />
 
             <TextView
                 android:id="@+id/weekTextViewMat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Matières"
                 android:textAllCaps="true"
