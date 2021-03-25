@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.view.View;
 
 import com.theog.schoolbackpack.R;
+import com.theog.schoolbackpack.model.DataBaseManager;
+import com.theog.schoolbackpack.model.Subject;
 
 public class LoadActivity extends AppCompatActivity {
 
@@ -34,7 +36,7 @@ public class LoadActivity extends AppCompatActivity {
             }
         }, 1500);
 
-        //DataBaseManager db = new DataBaseManager(this);
+        DataBaseManager db = new DataBaseManager(this);
 
         //Remise à zéro de la BDD
         /*db.getWritableDatabase().execSQL("DROP TABLE MATIERE");
@@ -91,16 +93,16 @@ public class LoadActivity extends AppCompatActivity {
         db = new DataBaseManager(this);*/
 
         //Tester les matière quand on ne pouvait pas les ajouter via l'appli
-        /*if (db.getSubjects().size() < 1) {
+        if (db.getSubjects().size() < 1) {
             db.addSubject(new Subject("Maths", "M. Walkowiak"));
             db.addSubject(new Subject("Anglais", "M. Roulin"));
             db.addSubject(new Subject("Français", "Mme Vieillard"));
             db.addSubject(new Subject("Allemand", "Mme Piau"));
             db.addSubject(new Subject("Sport", "M. Hamon"));
             db.addSubject(new Subject("Histoire Géo", "M. Venant"));
-        }*/
+        }
 
-        //db.close();
+        db.close();
     }
 
     @Override

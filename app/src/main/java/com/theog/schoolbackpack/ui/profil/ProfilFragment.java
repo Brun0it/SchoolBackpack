@@ -19,6 +19,7 @@ import com.theog.schoolbackpack.R;
 import com.theog.schoolbackpack.controller.AddClassDialog;
 import com.theog.schoolbackpack.controller.ClassAdapter;
 import com.theog.schoolbackpack.controller.CreateSubjectDialog;
+import com.theog.schoolbackpack.controller.MainActivity;
 import com.theog.schoolbackpack.controller.MatiereAdapter;
 import com.theog.schoolbackpack.model.Class;
 import com.theog.schoolbackpack.model.DataBaseManager;
@@ -93,6 +94,7 @@ public class ProfilFragment extends Fragment {
         calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
+        ((MainActivity)requireActivity()).init(mainPage, edtPage, matPage);
         setTheme();
         displayPage(mainPage);
         updateHeader();
@@ -194,12 +196,15 @@ public class ProfilFragment extends Fragment {
             DataBaseManager db = new DataBaseManager(requireContext());
             displayList(calendar.get(Calendar.DAY_OF_WEEK));
             db.close();
+            ((MainActivity) requireActivity()).setBack(true);
         } else if (page == matPage) {
             displayMat();
+            ((MainActivity) requireActivity()).setBack(true);
         }
     }
 
     public void hideAllPages() {
+        ((MainActivity) requireActivity()).setBack(false);
         mainPage.setVisibility(View.GONE);
         edtPage.setVisibility(View.GONE);
         matPage.setVisibility(View.GONE);
