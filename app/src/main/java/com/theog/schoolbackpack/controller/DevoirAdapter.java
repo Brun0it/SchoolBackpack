@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.theog.schoolbackpack.R;
+import com.theog.schoolbackpack.model.DataBaseManager;
 import com.theog.schoolbackpack.model.Devoir;
 import com.theog.schoolbackpack.ui.devoirs.DevoirsFragment;
 
@@ -82,6 +83,9 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.DevoirAdap
             @Override
             public void onClick(View v) {
                 devoir.setFait(!devoir.getFait());
+                DataBaseManager db = new DataBaseManager(activity);//context ??
+                db.updateDevoir(devoir);
+                db.close();
                 ((DevoirsFragment) fragment).displayList(((DevoirsFragment) fragment).getCalendar());
             }
         });
@@ -89,6 +93,12 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.DevoirAdap
         if (darkMode) holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_dark_devoirs));
         else holder.background.setBackground(activity.getResources().getDrawable(R.drawable.background_light_devoirs));
 
+        holder.background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ModifyDevoirDialog.showDialog(fragment, devoir);
+            }
+        });
     }
 
     @Override

@@ -27,6 +27,14 @@ public class Devoir {
         this.id = id;
     }
 
+    public Devoir(int id, Subject subject, Calendar date, String notes, Boolean evaluation) {
+        this.subject = subject;
+        this.date = date;
+        this.notes = notes;
+        this.evaluation = evaluation;
+        this.id = id;
+    }
+
     public Subject getSubject() {
         return subject;
     }
@@ -54,5 +62,21 @@ public class Devoir {
     public int getFaitSQL() {
         if (fait) return 1;
         return 0;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

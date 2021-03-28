@@ -58,8 +58,10 @@ public class DataBaseManager extends SQLiteOpenHelper {
 
         query = "CREATE TABLE EVALUATION ("
                 + "idEvaluation INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "idCours INTEGER REFERENCES COURS(idCours)," //Quand tu changera idCours en idMatiere, tu pourras décommenter les deux lignes (commentées du coup) dans deleteSubject stp ? :)
-                + "dateEvaluation DATE NOT NULL,"
+                + "idMatiere INTEGER REFERENCES MATIERE(idMatiere)," //Quand tu changera idCours en idMatiere, tu pourras décommenter les deux lignes (commentées du coup) dans deleteSubject stp ? :)
+                + "jourEvaluation INTEGER NOT NULL,"
+                + "moisEvaluation INTEGER NOT NULL,"
+                + "anneeEvaluation INTEGER NOT NULL,"
                 + "travailEvaluation VARCHAR(500) NOT NULL);";
         db.execSQL(query);
     }
@@ -204,8 +206,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
         getWritableDatabase().execSQL(query);
         query = "DELETE FROM COURS WHERE idMatiere = "+ id +";";
         getWritableDatabase().execSQL(query);
-        //query = "DELETE FROM EVALUATION WHERE idMatiere = "+ id +";";
-        //getWritableDatabase().execSQL(query);
+        query = "DELETE FROM EVALUATION WHERE idMatiere = "+ id +";";
+        getWritableDatabase().execSQL(query);
         query = "DELETE FROM MATIERE WHERE idMatiere = "+ id +";";
         getWritableDatabase().execSQL(query);
     }
@@ -259,5 +261,92 @@ public class DataBaseManager extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return devoirs;
+    }
+
+    public void updateDevoir(Devoir devoir) {
+        String query = "UPDATE DEVOIR SET travailDevoir = '"+ devoir.getNotes().replace("'","''") +"' WHERE idDevoir = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE DEVOIR SET idMatiere = '"+ devoir.getSubject().getId() + "' WHERE idDevoir = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE DEVOIR SET jourDevoir = '"+ devoir.getDate().get(Calendar.DAY_OF_MONTH) + "' WHERE idDevoir = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE DEVOIR SET moisDevoir = '"+ devoir.getDate().get(Calendar.MONTH) + "' WHERE idDevoir = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE DEVOIR SET anneeDevoir = '"+ devoir.getDate().get(Calendar.YEAR) + "' WHERE idDevoir = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE DEVOIR SET statutDevoir = '"+ devoir.getFaitSQL() + "' WHERE idDevoir = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+    }
+
+    public void deleteDevoir(int id) {
+        String query = "DELETE FROM DEVOIR WHERE idDevoir = " + id + ";";
+        getWritableDatabase().execSQL(query);
+    }
+
+    public void addEvaluation(Devoir devoir) {
+        if (devoir != null) {
+            String query = "INSERT INTO EVALUATION ('idMatiere', 'jourEvaluation', 'moisEvaluation', 'anneeEvaluation', 'travailEvaluation') " +
+                    "VALUES (" + devoir.getSubject().getId() + ", " + devoir.getDate().get(Calendar.DAY_OF_MONTH) + ", "
+                    + devoir.getDate().get(Calendar.MONTH) + ", "
+                    + devoir.getDate().get(Calendar.YEAR) + ", '" + devoir.getNotes().replace("'","''") + "');";
+            getWritableDatabase().execSQL(query);
+        }
+    }
+
+    public Devoir getEvaluation(int id) {
+        String query = "SELECT * FROM EVALUATION WHERE idEvaluation = "+ id +";";
+        Cursor cursor = this.getReadableDatabase().rawQuery(query, null);
+        cursor.moveToFirst();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, cursor.getInt(4));
+        calendar.set(Calendar.MONTH, cursor.getInt(3));
+        calendar.set(Calendar.DAY_OF_MONTH, cursor.getInt(2));
+        Devoir devoir = new Devoir(cursor.getInt(0), getSubject(cursor.getInt(1)), calendar, cursor.getString(5), true);
+        cursor.close();
+        return devoir;
+    }
+
+    public List<Devoir> getEvaluation() {
+        List<Devoir> devoirsE = new ArrayList<>();
+        String query = "SELECT * FROM EVALUATION;";
+        Cursor cursor = getWritableDatabase().rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int id = cursor.getInt(0);
+            devoirsE.add(getEvaluation(id));
+            cursor.moveToNext();
+        }
+        return devoirsE;
+    }
+
+    public List<Devoir> getEvaluation(Calendar date) {
+        List<Devoir> devoirsE = new ArrayList<>();
+        String query = "SELECT * FROM EVALUATION WHERE 'jourDevoir' = " + date.get(Calendar.DAY_OF_MONTH) + " AND 'moisDevoir' = " + date.get(Calendar.MONTH) + " AND 'anneeDevoir' = " + date.get(Calendar.YEAR) + ";";
+        Cursor cursor = getWritableDatabase().rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int id = cursor.getInt(0);
+            devoirsE.add(getEvaluation(id));
+            cursor.moveToNext();
+        }
+        return devoirsE;
+    }
+
+    public void updateEvaluation(Devoir devoir) {
+        String query = "UPDATE EVALUATION SET travailEvaluation = '"+ devoir.getNotes().replace("'","''") +"' WHERE idEvaluation = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE EVALUATION SET idMatiere = '"+ devoir.getSubject().getId() + "' WHERE idEvaluation = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE EVALUATION SET jourEvaluation = '"+ devoir.getDate().get(Calendar.DAY_OF_MONTH) + "' WHERE idEvaluation = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE EVALUATION SET moisEvaluation = '"+ devoir.getDate().get(Calendar.MONTH) + "' WHERE idEvaluation = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+        query = "UPDATE EVALUATION SET anneeEvaluation = '"+ devoir.getDate().get(Calendar.YEAR) + "' WHERE idEvaluation = "+ devoir.getId() +";";
+        getWritableDatabase().execSQL(query);
+    }
+
+    public void deleteEvaluation(int id) {
+        String query = "DELETE FROM EVALUATION WHERE idEvaluation = " + id + ";";
+        getWritableDatabase().execSQL(query);
     }
 }

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.theog.schoolbackpack.R;
 import com.theog.schoolbackpack.controller.CategoryDevoirAdapter;
+import com.theog.schoolbackpack.controller.DevoirAdapter;
+import com.theog.schoolbackpack.controller.MatiereAdapter;
 import com.theog.schoolbackpack.controller.NewDevoirDialog;
 import com.theog.schoolbackpack.model.Class;
 import com.theog.schoolbackpack.model.DataBaseManager;
@@ -181,7 +184,7 @@ public class DevoirsFragment extends Fragment {
         time6.set(Calendar.HOUR_OF_DAY, 14);
         time6.set(Calendar.MINUTE, 0);
 
-        Subject maths = new Subject("Maths", "M. Walkowiak");
+        /*Subject maths = new Subject("Maths", "M. Walkowiak");
         Subject anglais = new Subject("Anglais", "M. Roulin");
         Subject francais = new Subject("Français", "Mme Vieillard");
         Subject allemand = new Subject("Allemand", "Mme Piau");
@@ -210,7 +213,7 @@ public class DevoirsFragment extends Fragment {
         friday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),maths, "TD4", time2, 180));
         friday.add(new Class(time0.get(Calendar.DAY_OF_WEEK),anglais, "TD4", time6, 90));
 
-        Devoir eval1 = new Devoir(allemand, time2, "eval1", true);
+        /*Devoir eval1 = new Devoir(allemand, time2, "eval1", true);
         Devoir exo1 = new Devoir(maths, Calendar.getInstance(), "exo1", false);
         Devoir exo2 = new Devoir(maths, Calendar.getInstance(), "exo2", false);
         Devoir exo3 = new Devoir(francais, time2, "exo3", false);
@@ -253,6 +256,10 @@ public class DevoirsFragment extends Fragment {
     public List<Devoir> getDevoirs(Calendar calendar){
         DataBaseManager db = new DataBaseManager(requireActivity());
         List<Devoir> devoirs = db.getDevoirs();
+        List<Devoir> evaluation = db.getEvaluation();
+        for (int i = 0; i < evaluation.size(); i++) {
+            devoirs.add(evaluation.get(i));
+        }
         db.close();
         List<Devoir> devoirsF = new ArrayList<>();
         for(int i=0; i<devoirs.size(); i++){

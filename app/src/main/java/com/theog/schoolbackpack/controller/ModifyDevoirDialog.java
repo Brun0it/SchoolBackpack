@@ -1,9 +1,10 @@
 package com.theog.schoolbackpack.controller;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,10 +16,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theog.schoolbackpack.R;
 import com.theog.schoolbackpack.model.DataBaseManager;
 import com.theog.schoolbackpack.model.Devoir;
@@ -30,15 +33,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class CreationDevoirDialog {
+public class ModifyDevoirDialog {
 
-    @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
-    public static void showDialog(Fragment fragment, Boolean evaluation){
+    public static void showDialog(Fragment fragment, Devoir devoir){
         Activity activity = fragment.requireActivity();
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_creation_devoir);
+        dialog.setContentView(R.layout.dialog_modify_devoir);
 
         DataBaseManager db = new DataBaseManager(activity);
         List<Subject> subjects = db.getSubjects();
@@ -60,12 +62,14 @@ public class CreationDevoirDialog {
 
         //FIN
 
+
         Calendar selectedDate = Calendar.getInstance();
         if (fragment.getClass() == DevoirsFragment.class) selectedDate = ((DevoirsFragment) fragment).getCalendar();
         else selectedDate = ((EdtFragment) fragment).getCalendar();
 
         ConstraintLayout background = dialog.findViewById(R.id.background);
-        Button add = dialog.findViewById(R.id.add);
+        Button modify = dialog.findViewById(R.id.modify);
+        Button delete = dialog.findViewById(R.id.delete);
         Button close = dialog.findViewById(R.id.close);
         TextView title = dialog.findViewById(R.id.title);
         TextView dateText = dialog.findViewById(R.id.dateText);
@@ -77,8 +81,8 @@ public class CreationDevoirDialog {
 
         if ((activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) background.setBackground(activity.getDrawable(R.drawable.background_dark));
 
-        if (!evaluation) {
-            title.setText("Nouvel exercice");
+        if (!devoir.isEvaluation()) {
+            title.setText("Modifier l'exercice");
             textPlain.setBackground(activity.getDrawable(R.drawable.background_blue_text_plain));
             textPlain.setHintTextColor(activity.getResources().getColor(R.color.little_white));
             textPlain.setTextColor(activity.getResources().getColor(R.color.white));
@@ -97,14 +101,38 @@ public class CreationDevoirDialog {
             datePickerDialog.show();
         });
 
-        add.setOnClickListener(v -> {
+        textPlain.setText(devoir.getNotes());
+        finalSelectedDate.set(devoir.getDate().get(Calendar.YEAR), devoir.getDate().get(Calendar.MONTH), devoir.getDate().get(Calendar.DAY_OF_MONTH));
+        sp1.setSelection((devoir.getSubject().getId())-1);
+
+        modify.setOnClickListener(v -> {
+            devoir.setNotes(textPlain.getText().toString());
+            devoir.setDate(finalSelectedDate);
+            devoir.setSubject(subjects.get((int) sp1.getSelectedItemId()));
             DataBaseManager db1 = new DataBaseManager(activity);
-            Devoir devoir = new Devoir(subjects.get((int) sp1.getSelectedItemId()), finalSelectedDate,textPlain.getText().toString(), evaluation);
-            if(evaluation) db1.addEvaluation(devoir);
-            else db1.addDevoir(devoir);
+            if(devoir.isEvaluation()) db1.updateEvaluation(devoir);
+            else db1.updateDevoir(devoir);
             db1.close();
+            ((DevoirsFragment) fragment).updateDate();
             dialog.dismiss();
-            if (fragment.getClass() == DevoirsFragment.class) ((DevoirsFragment) fragment).updateDate();
+        });
+
+        delete.setOnClickListener(v -> {
+            new AlertDialog.Builder(activity)
+                    .setMessage("Êtes vous sûr de vouloir supprimer ce devoir ?")
+                    .setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                            DataBaseManager db1 = new DataBaseManager(activity);
+                            if (devoir.isEvaluation()) db1.deleteEvaluation(devoir.getId());
+                            else db1.deleteDevoir(devoir.getId());
+                            db1.close();
+                            ((DevoirsFragment) fragment).updateDate();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Annuler",null)
+                    .show();
         });
 
         close.setOnClickListener(v -> dialog.dismiss());

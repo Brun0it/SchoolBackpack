@@ -36,8 +36,7 @@ public class NewDevoirDialog {
             DataBaseManager db = new DataBaseManager(fragment.requireContext());
             List<Subject> mats = db.getSubjects();
             db.close();
-            if (mats.size() > 0) new CreationDevoirDialog().showDialog(fragment, false); else Toast.makeText(fragment.requireContext(), "Vous devez dabord créer au moins une matière pour pouvoir ajouter une évaluation.", Toast.LENGTH_LONG);
-            new CreationDevoirDialog().showDialog(fragment, true);
+            if (mats.size() > 0) new CreationDevoirDialog().showDialog(fragment, true); else Toast.makeText(fragment.requireContext(), "Vous devez dabord créer au moins une matière pour pouvoir ajouter une évaluation.", Toast.LENGTH_LONG);
             dialog.dismiss();
         });
 
